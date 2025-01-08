@@ -32,6 +32,14 @@
                 <p class="mb-2">
                     <span class="fw-bold">Limit:</span> {{$cupon->code_limit}}
                 </p>
+                
+                <p class="mb-2">
+                    <span class="fw-bold">Used:</span> 
+                    @php 
+                                $usedCount = App\Models\CuponUseLog::where("cupon_id",$cupon->id)->count();
+                            @endphp
+                            {{ $usedCount }} 
+                </p>
                 <p class="mb-2">
                     <span class="fw-bold">Description:</span>
                     {!! $cupon->description !!}
@@ -62,8 +70,20 @@
                     @foreach($cupon_log as $key=>$cupon_log)
                         <tr>
                             <td>{{++$key}}</td>
-                            <td>{{$cupon_log->user_id}}</td>
-                            <td>{{$cupon_log->order_id}}</td>
+                            <td>
+                                @if($cupon_log->user_id == 0)
+                                Guest Account
+                                @else
+                                $user = App\Models\User::where('id',$cupon_log->user_id)->first();
+
+                                {{$user->name}}
+                                @endif
+                              </td>
+                            <td>
+                                <a href="/admin/orders/{{$cupon_log->OrderInfo->id}}" target="_blank">
+                                {{$cupon_log->OrderInfo->order_number}}
+                                </a>
+                            </td>
                             <td>{{$cupon_log->created_at}}</td>
                         </tr>
                     @endforeach

@@ -152,7 +152,8 @@ Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.
 Route::post('/cart/clearAll', [CartController::class, 'clearAll'])->name('cart.clearAll');
 Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 Route::post('/checkout/store', [CheckoutController::class, 'store'])->name('checkout.store');
-
+Route::post("/cart/cuppon/apply",[CartController::class,"cuponApply"])->name("cart.apply_coupon");
+Route::post("/cart/coupon/remove", [CartController::class, "couponRemove"])->name("cart.coupon.remove");
 });
 
 

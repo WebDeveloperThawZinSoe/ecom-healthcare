@@ -18,4 +18,8 @@ class CuponUseLog extends Model
         "order_id",
     ];
 
+    public function OrderInfo(){
+        return $this->belongsTo(Order::class, 'order_id', 'id');
+    }
+
 }

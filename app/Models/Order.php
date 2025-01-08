@@ -24,6 +24,7 @@ class Order extends Model
         'payment_account_name',
         'status',
         "payment_status",
+        "cupon_code_id"
     ];
 
     public function user()
@@ -44,6 +45,10 @@ class Order extends Model
     public function customerType()
     {
         return $this->belongsTo(Type::class, 'customer_type');
+    }
+
+    public function CuponCode(){
+        return $this->belongsTo(CuponCode::class, 'cupon_code_id', 'id');
     }
 
 }

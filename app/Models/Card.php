@@ -27,4 +27,8 @@ class Card extends Model
         return $this->belongsTo(ProductVariants::class);
     }
 
+    public function cupon_code_info(){
+        return $this->belongsTo(CuponCode::class,"coupon_code","id");
+    }
+
 }

@@ -290,7 +290,7 @@ $generalSettings = App\Models\GeneralSetting::whereIn('name', [
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="shopping-cart" data-bs-toggle="tab"
                                 data-bs-target="#shopping-cart-pane" type="button" role="tab"
-                                aria-controls="shopping-cart-pane" aria-selected="true">Shopping Cart
+                                aria-controls="shopping-cart-pane" aria-selected="true">Shopping Cart 
                                 <span class="badge badge-light"> @auth
                                     @php
                                     // For authenticated users, count based on user_id
@@ -376,10 +376,54 @@ $generalSettings = App\Models\GeneralSetting::whereIn('name', [
 
                                 <div class="cart-total">
                                     <h5 class="mb-0">Subtotal:</h5>
-                                    <h5 class="mb-0">{{ number_format($totalPrice, 2) }} $</h5>
+                                    @php 
+                                    $cards = auth()->check()
+                                    ? App\Models\Card::where('user_id', auth()->id())->with('product_variant')->get()
+                                    : App\Models\Card::where('session_id',
+                                    session()->getId())->with('product_variant')->get();
+
+                                   
+
+                                    $card = auth()->check()
+                                    ? App\Models\Card::where('user_id', auth()->id())->with('product_variant')->first()
+                                    : App\Models\Card::where('session_id',
+                                    session()->getId())->with('product_variant')->first();
+                                    $cupon_code = $card ? $card->coupon_code : null;
+                                    $original_price = $totalPrice;
+                                    if($cupon_code != null){
+                                        $cupon_code_info = App\Models\CuponCode::where("id",$cupon_code)->first();
+                                        $cupon_code_type = $cupon_code_info->type;
+                                        $cupon_code_amount  = $cupon_code_info->amount;
+                                        $original_price = $totalPrice;
+                                        $after_discount_price = 0;
+                                        if($cupon_code_type == 1){
+                                            $after_discount_price = $original_price - $cupon_code_amount;
+                                        }elseif($cupon_code_type == 2){
+                                            $after_discount_price = $original_price - ($original_price * ($cupon_code_amount / 100));
+                                        }
+                                    }
+
+                                    @endphp
+                                    @if($cupon_code ==  null)
+                                        <h5 class="mb-0">{{ number_format($original_price, 2) }} $</h5>
+                                    @else 
+                                    
+                                        
+                                        <h5 class="mb-0"><del>{{ number_format($original_price, 2) }}</del> $
+                                        <br>
+                                        {{ number_format($after_discount_price, 2) }} $
+                                       
+                                        </h5>
+                                  
+                                  
+                                    @endif
+         
                                     <!-- Display the total price -->
                                 </div>
-
+                                @if($cupon_code !=  null)
+                                    <p>  Cupon Code : {{$cupon_code_info->cupon_code}}</p> 
+                                        <br><br> 
+                                    @endif 
                                 <div class="mt-auto">
 
                                     <a href="/checkout" class="btn btn-light btn-block m-b20">Checkout</a>

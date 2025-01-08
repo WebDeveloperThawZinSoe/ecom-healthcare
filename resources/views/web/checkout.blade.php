@@ -120,10 +120,9 @@
                                 <select name="payment_method" required class="default-select w-100" onchange="togglePaymentFields()">
                                     @php $payment_methods = App\Models\PaymentMethod::get(); @endphp
                                     <option value="">SELECT PAYMENT METHOD</option>
-                                    @auth
+                                    
                                     <option value="0">Cash On Delivery</option>
                                     <option value="stripe">Stripe</option>
-                                    @endauth
                                    
                                 </select>
                             </div>
@@ -135,6 +134,22 @@
                         <div id="card-element" class="form-control"></div>
                         <div id="card-errors" role="alert" style="color: red; margin-top: 10px;"></div>
                     </div>
+                    @php 
+                     $cards = auth()->check()
+                                ? App\Models\Card::where('user_id', auth()->id())->with('product_variant')->get()
+                                : App\Models\Card::where('session_id',
+                                session()->getId())->with('product_variant')->get();
+
+                                $totalPrice = 0;
+
+                                $card = auth()->check()
+                                ? App\Models\Card::where('user_id', auth()->id())->with('product_variant')->first()
+                                : App\Models\Card::where('session_id',
+                                session()->getId())->with('product_variant')->first();
+
+                                $cupon_code = $card ? $card->coupon_code : null;
+                    @endphp
+                    <input type="hidden" name="cupon_code_id" value="{{$cupon_code}}">
 
                     <!-- Submit Button -->
                     <div class="col-md-12 m-b25">
@@ -239,25 +254,49 @@
                         <table>
                             <tbody>
 
+                            @php 
+                                    $cupon_code = $card ? $card->coupon_code : null;
+                                    $original_price = $totalPrice;
+                                    if($cupon_code != null){
+                                        $cupon_code_info = App\Models\CuponCode::where("id",$cupon_code)->first();
+                                        $cupon_code_type = $cupon_code_info->type;
+                                        $cupon_code_amount  = $cupon_code_info->amount;
+                                        $original_price = $totalPrice;
+                                        $after_discount_price = 0;
+                                        if($cupon_code_type == 1){
+                                            $after_discount_price = $original_price - $cupon_code_amount;
+                                        }elseif($cupon_code_type == 2){
+                                            $after_discount_price = $original_price - ($original_price * ($cupon_code_amount / 100));
+                                        }
+                                    }
 
-                                <tr class="total">
-                                    <td style="font-size:20px !important;">Total</td>
-                                    <td class="price"> {{ number_format($totalPrice, 2) }} $</td>
+                                    @endphp
 
-                                </tr>
+                                    @if($cupon_code ==  null)
+                                            <tr class="total">
+                                            <td style="font-size:20px !important;">Total</td>
+                                            <td class="price"> {{ number_format($totalPrice, 2) }} $</td>
+
+                                        </tr>
+                                    @else 
+                                    <tr class="total">
+                                        <td style="font-size:20px !important;">Total</td>
+                                        <td class="price"> <del>{{ number_format($totalPrice, 2) }}</del> $
+                                        <br>
+                                        {{ number_format($after_discount_price, 2) }} $
+                                    </td>
+
+                                        </tr>
+                                    @endif
+
+                                    @if($cupon_code !=  null)
+                                    <p>  Cupon Code : {{$cupon_code_info->cupon_code}}</p> 
+                                    @endif 
+                                
                             </tbody>
                         </table>
 
-                        <p class="text">Your personal data will be used to process your order, support your experience
-                            throughout this website, and for other purposes described in our <a
-                                href="javascript:void(0);">privacy policy.</a></p>
-                        <div class="form-group">
-                            <div class="custom-control custom-checkbox d-flex m-b15">
-                                <input required type="checkbox" class="form-check-input" id="basic_checkbox_3">
-                                <label class="form-check-label" for="basic_checkbox_3">I have read and agree to the
-                                    website terms and conditions </label>
-                            </div>
-                        </div>
+                       
                         @php
                         $cards = auth()->check()
                         ? App\Models\Card::where('user_id', auth()->id())->with('product_variant')->count()

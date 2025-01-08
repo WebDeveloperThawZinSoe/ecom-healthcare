@@ -81,7 +81,7 @@ class CuponCodeController extends Controller
 
     //show 
     public function show($id){
-        $cupon = CuponCode::find($id)->first();   
+        $cupon = CuponCode::where("id",$id)->first();   
         $cupon_log = CuponUseLog::where("cupon_id",$id)->get();
         return view("admin.cupon.detail",compact("cupon","cupon_log")); 
     }

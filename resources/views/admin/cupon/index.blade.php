@@ -39,6 +39,7 @@
                         <th>Name</th>
                         <th>Type / Amount</th>
                         <th>Status</th>
+                        <th>Usage/Limit</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -58,6 +59,12 @@
                             @endif
                             </td>
                         <td>{{ $cupon->status == 1 ? 'Active' : 'Inactive' }}</td>
+                        <td>
+                            @php 
+                                $usedCount = App\Models\CuponUseLog::where("cupon_id",$cupon->id)->count();
+                            @endphp
+                            {{ $usedCount }} / {{ $cupon->code_limit }}
+                        </td>
                         <td>
                             <a href="{{ route('admin.cupon.show', $cupon->id) }}"
                                 class="btn btn-primary btn-sm me-1">
@@ -123,8 +130,9 @@
                             <div class="form-group">
                                 <label for="status">Status <span style="color:gold">*</span></label>
                                 <select class="form-control" id="status" name="status">
-                                    <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Active</option>
-                                    <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Inactive</option>
+                                   
+                                    <option value="0" {{ old('status') == 0 ? 'selected' : '' }} >Inactive</option>
+                                    <option value="1" {{ old('status') == 1 ? 'selected' : '' }} selected>Active</option>
                                 </select>
                             </div>
                             <div class="form-group">

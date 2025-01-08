@@ -23,7 +23,38 @@
         <p><strong>Customer:</strong> {{ $order->user->name ?? 'Guest' }}</p>
         <p><strong>Email:</strong> {{ $order->user->email ?? 'N/A' }}</p>
         <p><strong>Phone:</strong> {{ $order->user->phone ?? 'N/A' }}</p>
-        <p><strong>Total Price:</strong> {{ number_format($order->total_price, 1) }} Ks</p>
+        <p><strong>Total Price:</strong> 
+        
+        @php 
+            $cupon_code_id = $order->cupon_code_id ?? null;
+                                
+        @endphp
+        {{ number_format($order->total_price, 1) }} $
+        @if($cupon_code_id != null)
+        <br>
+        <p><strong>Cupon Code:</strong> <a href="/admin/cupon/{{$order->CuponCode->id}}" target="_blank">  {{$order->CuponCode->cupon_code}} </a> </p>
+        @endif
+        @if($cupon_code_id == "AAAA")
+            {{ number_format($order->total_price, 1) }} $
+        @elseif($cupon_code_id == "AAAA")
+            @php
+                $cupon_type = $order->CuponCode->type;
+                $cupon_amount = $order->CuponCode->amount;
+                $original_price = $order->total_price;
+                if($cupon_type == 1){
+                    $after_discount_price = $original_price - $cupon_amount;
+                    echo $after_discount_price . "$";
+                 }elseif($cupon_type == 2){
+                    $after_discount_price = $original_price - ($original_price * ($cupon_amount / 100));
+                    echo $after_discount_price . "$";
+                }
+            @endphp
+            <br>
+            <p><strong>Total Price:</strong> <a href="/admin/cupon/{{$order->CuponCode->id}}" target="_blank">  {{$order->CuponCode->cupon_code}} </a> </p>
+        @endif
+        </p>
+
+       
         
         <hr>
 

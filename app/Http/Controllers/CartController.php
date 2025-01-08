@@ -3,6 +3,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Card;
+use App\Models\CuponCode;
+use App\Models\CuponUseLog;
 use App\Models\Product;
 use App\Models\ProductVariants;
 use Illuminate\Support\Facades\Auth;
@@ -198,4 +200,92 @@ class CartController extends Controller
 
         return redirect()->back()->with('success', 'Cart cleared successfully!');
     }
+
+
+
+    public function cuponApply(Request $request)
+    {
+        // Validate the input
+        $request->validate([
+            'coupon' => 'required|string',
+        ]);
+    
+        // Get the coupon code from the request
+        $couponCode = $request->input('coupon');
+    
+        // Check if the coupon exists in the database
+        $coupon = CuponCode::where('cupon_code', $couponCode)->first();
+    
+        if (!$coupon) {
+            // If the coupon doesn't exist, return an error
+            return redirect()->back()->with('coupon_error', 'Invalid coupon code!');
+        }
+
+        if($coupon->status == 0){
+             // If the coupon is inactivate, return an error
+             return redirect()->back()->with('coupon_error', 'Your coupon code is not activate!');
+        }
+    
+        // Check the usage limit
+        $cuponLimit = $coupon->code_limit;
+        $count = CuponUseLog::where('cupon_id', $coupon->id)->count();
+    
+        if ($cuponLimit <= $count) {
+            return redirect()->back()->with('coupon_error', 'Your Coupon Code Has Reached Its Limit!');
+        }
+    
+        // Check if the current date is valid
+        $currentDate = now();
+        $startDate = $coupon->start_date;
+        $endDate = $coupon->end_date;
+        if($startDate != null){
+            if ($currentDate->lt($startDate)) {
+                return redirect()->back()->with('coupon_error', 'Coupon is not valid yet!');
+            }
+        }
+
+    
+        if ($endDate && $currentDate->gt($endDate)) {
+            return redirect()->back()->with('coupon_error', 'Coupon has expired!');
+        }
+    
+        // Update the coupon code in all card items for the user
+        if (auth()->check()) {
+            // For logged-in users
+            Card::where('user_id', auth()->id())->update([
+                'coupon_code' => $coupon->id,
+            ]);
+        } else {
+            // For guest users using session ID
+            $sessionId = session()->getId();
+            Card::where('session_id', $sessionId)->update([
+                'coupon_code' => $coupon->id,
+            ]);
+        }
+    
+        // Return success message
+        return redirect()->back()->with('coupon_success', 'Coupon applied successfully!');
+    }
+
+    public function couponRemove(Request $request)
+    {
+        // Debug to check if the request is working
+        if (auth()->check()) {
+            // For logged-in users
+            Card::where('user_id', auth()->id())->update([
+                'coupon_code' => null,
+            ]);
+        } else {
+            // For guest users using session ID
+            $sessionId = session()->getId();
+            Card::where('session_id', $sessionId)->update([
+                'coupon_code' => null
+            ]);
+        }
+
+        return redirect()->back()->with('coupon_success', 'Coupon remove successfully!');
+    }
+    
+
+
 }

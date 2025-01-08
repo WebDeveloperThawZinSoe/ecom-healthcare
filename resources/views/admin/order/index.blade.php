@@ -115,7 +115,31 @@
                             </div>
                             @endif
                         </td>
-                        <td>{{ $order->total_price }} Ks</td>
+                        <td>
+                            {{ $order->total_price }} $
+                            @php 
+                                $cupon_code_id = $order->cupon_code_id ?? null;
+                                
+                            @endphp
+                            @if($cupon_code_id == "AAA")
+                                {{ $order->total_price }} $
+                            @elseif($cupon_code_id == "AAA")
+                                @php
+                                    $cupon_type = $order->CuponCode->type;
+                                    $cupon_amount = $order->CuponCode->amount;
+                                    $original_price = $order->total_price;
+                                    if($cupon_type == 1){
+                                            $after_discount_price = $original_price - $cupon_amount;
+                                            echo $after_discount_price . "$";
+                                        }elseif($cupon_type == 2){
+                                            $after_discount_price = $original_price - ($original_price * ($cupon_amount / 100));
+                                            echo $after_discount_price . "$";
+                                        }
+                                @endphp
+                              
+                            @endif
+                           
+                        </td>
                         <td>
                             <!-- Status and Form to Update -->
                             @if(in_array($order->status, [1, 4]))
