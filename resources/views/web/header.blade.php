@@ -249,7 +249,7 @@ $generalSettings = App\Models\GeneralSetting::whereIn('name', [
                     <ul class="nav navbar-nav dark-nav">
                         <li><a href="/">Home</a></li>
                         <li><a href="/products">Products</a></li>
-                        <li><a href="/pre_order">Pre Order</a></li>
+                      
                         <li><a href="/brands">Brands</a></li>
                         <li><a href="/faq">FAQ</a></li>
                         <li><a href="/order_track">Track</a></li>

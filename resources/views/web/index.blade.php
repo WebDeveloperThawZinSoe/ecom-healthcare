@@ -8,12 +8,12 @@
     @endphp
     <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
-            @foreach($photos as $key => $photo)
+        @foreach($photos as $key => $photo)
             <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                <img src="{{ asset($photo->image) }}" class="d-block w-100" alt="Image {{ $key + 1 }}"
-                    style="max-height:500px !important;min-height:300px !important">
+                <img src="{{ asset($photo->image) }}" class="d-block w-100" alt="Image {{ $key + 1 }}">
             </div>
             @endforeach
+
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
