@@ -62,7 +62,7 @@
                                     $goals = App\Models\Goal::get();
                                     $groupedGoals = $goals->groupBy('name');
                                 @endphp
-                                <div class="widget widget_categories">
+                                <!-- <div class="widget widget_categories">
                                     <h6 class="widget-title">Goal</h6>
                                     <ul>
                                         @foreach($groupedGoals as  $index => $goal)
@@ -73,7 +73,7 @@
                                             
                                         </li>
                                         @endforeach
-                                </div>
+                                </div> -->
 
                                 <a href="/products" class="btn btn-sm font-14 btn-primary btn-sharp">RESET</a>
                             </aside>
