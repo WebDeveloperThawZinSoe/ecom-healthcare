@@ -18,6 +18,14 @@ $generalSettings = App\Models\GeneralSetting::whereIn('name', [
             <div class="extra-nav d-md-flex d-none">
                 <div class="extra-cell">
                     <ul class="navbar-nav header-right">
+                    @php
+                    $logo = App\Models\GeneralSetting::where("name","logo")->first();
+                    $generalSettings = App\Models\GeneralSetting::whereIn('name', [
+                    'about_us', 'how_to_sell_us', 'phone_number_1', 'phone_number_2', 'phone_number_3',
+                    'email_1', 'email_2', 'email_3', 'facebook', 'telegram','address', 'discord' , 'viber' , 'skype'
+                    ])->pluck('value', 'name');
+                    @endphp
+                    @if(isset($generalSettings['address']) && $generalSettings['address'] != null)
                         <li class="nav-item info-box pe-3 d-xl-flex d-none">
                             <div class="nav-link">
                                 <div class="dz-icon">
@@ -25,10 +33,12 @@ $generalSettings = App\Models\GeneralSetting::whereIn('name', [
                                 </div>
                                 <div class="info-content">
                                     <span style="color:black">Address</span>
-                                    <h6 class="title mb-0"> 36st, Between 72stx73st, Maharaungmyay, Mandalay</h6>
+                                    <h6 class="title mb-0">{{$generalSettings['address']}}</h6>
                                 </div>
                             </div>
                         </li>
+                    @endif
+                    @if(isset($generalSettings['phone_number_1']) && $generalSettings['phone_number_1'] != null)            
                         <li class="nav-item info-box ">
                             <div class="nav-link">
                                 <div class="dz-icon">
@@ -36,11 +46,11 @@ $generalSettings = App\Models\GeneralSetting::whereIn('name', [
                                 </div>
                                 <div class="info-content">
                                     <span style="color:black">24/7 SUPPORT</span>
-                                    <h6 class="title mb-0">09770099006</h6>
+                                    <h6 class="title mb-0">{{ $generalSettings['phone_number_1']}}</h6>
                                 </div>
                             </div>
                         </li>
-
+                        @endif
                     </ul>
                 </div>
             </div>

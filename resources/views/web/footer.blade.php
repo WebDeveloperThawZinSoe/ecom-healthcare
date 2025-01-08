@@ -14,18 +14,26 @@ $generalSettings =  App\Models\GeneralSetting::whereIn('name', [
 					<div class="col-xl-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
 						<div class="widget widget_about me-2">
 							<div class="footer-logo logo-white">
-								<!-- <a href="/"><img src="{{ asset('images/general_settings/' . $logo->value) }}" alt=""></a>  -->
+								
 							</div>
 							<ul class="widget-address">
-								<li>
-									<p><span>Address</span> :  36st, Between 72stx73st, Maharaungmyay, Mandalay </p>
-								</li>
-								<li>
-									<p><span>E-mail</span> : {{$generalSettings->get('email_1')}}  </p>
-								</li>
-								<li>
-									<p><span>Phone</span> : 09770099006 </p>
-								</li>
+								@if(!empty($generalSettings->get('address')))
+									<li>
+										<p><span>Address</span>: {{ $generalSettings->get('address') }}</p>
+									</li>
+								@endif
+
+								@if(!empty($generalSettings->get('email_1')))
+									<li>
+										<p><span>E-mail</span>: {{ $generalSettings->get('email_1') }}</p>
+									</li>
+								@endif
+
+								@if(!empty($generalSettings->get('phone_number_1')))
+									<li>
+										<p><span>Phone</span>: {{ $generalSettings->get('phone_number_1') }}</p>
+									</li>
+								@endif
 							</ul>
 							<div class="dz-social-icon">
                         <ul>
@@ -96,7 +104,7 @@ $generalSettings =  App\Models\GeneralSetting::whereIn('name', [
 					</div>
 					<div class="col-xl-3 col-md-3 col-sm-4 col-6 wow fadeInUp" data-wow-delay="0.4s">
 						<div class="widget widget_services">
-						<!--<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3454.893463310722!2d96.20124037461648!3d16.88669171703713!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30c193fbf369bd69%3A0x14d8bc571b3c87b4!2sApex%20Myanmar%20Web%20Service!5e1!3m2!1sen!2smm!4v1730125475061!5m2!1sen!2smm" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>-->
+						
 						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d97431.69228191987!2d95.93869781802879!3d21.975350544038513!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30cb6d1bee31421b%3A0x682fd5de6585427f!2sChanayethazan%2C%20Mandalay!5e1!3m2!1sen!2smm!4v1732674987268!5m2!1sen!2smm" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 						</div>
 					</div>
@@ -110,8 +118,8 @@ $generalSettings =  App\Models\GeneralSetting::whereIn('name', [
 			<div class="container">
 				<div class="row fb-inner wow fadeInUp" data-wow-delay="0.1s">
 					<div class="col-lg-6 col-md-12 text-start"> 
-						<!--<p class="copyright-text">© 2024 Power By <a href="https://apexmmweb.com/">Apex MM  Web</a> . </p>-->
-						<p class="copyright-text">© Crossfitsupplements 2024 - All rights reserved. </p>
+						<p class="copyright-text">© {{ env('APP_NAME') }} {{ now()->year }} - All rights reserved.</p>
+
 					</div>
 					<div class="col-lg-6 col-md-12 text-end"> 
 						<div class="d-flex align-items-center justify-content-center justify-content-md-center justify-content-xl-end">

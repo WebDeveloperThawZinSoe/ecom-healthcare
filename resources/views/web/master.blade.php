@@ -14,12 +14,18 @@
 	<meta property="og:title" content="MoonCart Shop & eCommerce HTML Template">
 	<meta property="og:description" content="MoonCart Shop & eCommerce HTML Template">
 	<meta name="format-detection" content="telephone=no">
-	
+	@php
+		$logo = App\Models\GeneralSetting::where("name","logo")->first();
+		$generalSettings = App\Models\GeneralSetting::whereIn('name', [
+		'about_us', 'how_to_sell_us', 'phone_number_1', 'phone_number_2', 'phone_number_3',
+		'email_1', 'email_2', 'email_3', 'facebook', 'telegram','address', 'discord' , 'viber' , 'skype'
+		])->pluck('value', 'name');
+		@endphp
 	<!-- FAVICONS ICON -->
-	<link rel="icon" type="image/x-icon" href="{{asset('web/images/favicon.png')}}">
+	<link rel="icon" type="image/x-icon" href="{{ asset('images/general_settings/' . $logo->value) }}">
 	
 	<!-- PAGE TITLE HERE -->
-	<title>Supply Shop</title>
+	<title> {{ env('APP_NAME') }}</title>
 	
 	<!-- MOBILE SPECIFIC -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
