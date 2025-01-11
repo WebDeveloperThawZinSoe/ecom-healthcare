@@ -15,13 +15,14 @@
 
     #24262B To #4e8cca
     #3E4043 To #60a0d6
+    rgb(255,64,62) to #000000
     
 */
 @import url(../icons/feather/css/iconfont.css);
 :root {
-  --gradient: linear-gradient( to right, rgb(255,64,62) 0%, rgb(255,129,27) 100%);
+  --gradient: linear-gradient( to right, #000000 0%, rgb(255,129,27) 100%);
   --gradient-sec: linear-gradient( to right, rgb(57,26,166) 0%, rgb(6,163,245) 100%);
-  --primary: rgb(255,64,62);
+  --primary: #000000;
   --secondary: #4e8cca;
   --primary-hover: black;
   --primary-dark: black;
@@ -3311,19 +3312,19 @@ select.is-invalid {
 .woocommerce input.button,
 .woocommerce #place_order {
   --bs-btn-color: #ffffff;
-  --bs-btn-bg: rgb(255,64,62);
-  --bs-btn-border-color: rgb(255,64,62);
+  --bs-btn-bg: #000000;
+  --bs-btn-border-color: #000000;
   --bs-btn-hover-color: #ffffff;
-  --bs-btn-hover-bg: rgb(255,64,62);
-  --bs-btn-hover-border-color: rgb(255,64,62);
+  --bs-btn-hover-bg: #000000;
+  --bs-btn-hover-border-color: #000000;
   --bs-btn-focus-shadow-rgb: 49, 139, 118;
   --bs-btn-active-color: #ffffff;
-  --bs-btn-active-bg: rgb(255,64,62);
-  --bs-btn-active-border-color: rgb(255,64,62);
+  --bs-btn-active-bg: #000000;
+  --bs-btn-active-border-color: #000000;
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #ffffff;
-  --bs-btn-disabled-bg: rgb(255,64,62);
-  --bs-btn-disabled-border-color: rgb(255,64,62); }
+  --bs-btn-disabled-bg: #000000;
+  --bs-btn-disabled-border-color: #000000; }
 
 .btn-secondary {
   --bs-btn-color: #ffffff;

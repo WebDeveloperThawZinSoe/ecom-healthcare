@@ -1,6 +1,46 @@
 @extends('web.master')
 @section('body')
+<style>
+@media (max-width: 768px) {
+    #carouselExample .carousel-item img {
+        height: 400px;
+        /* Adjust height as needed */
+        object-fit: cover;
+        /* Ensures the image covers the set height */
+    }
+}
 
+@media (min-width: 768px) {
+    #carouselExample .carousel-item img {
+        height: 600px;
+        /* Adjust height as needed */
+        object-fit: cover;
+        /* Ensures the image covers the set height */
+    }
+}
+</style>
+
+
+
+<style>
+marquee {
+    background-color: #f5f5f5;
+    color: #333;
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-weight: 500;
+}
+</style>
+<style>
+/* Hide <br> on screens smaller than 992px (tablet and mobile) */
+@media (max-width: 992px) {
+    .hide-on-mobile {
+        display: none;
+    }
+}
+</style>
 <div class="page-content bg-white">
     @php
     $photos = App\Models\Gallery::orderBy("sort","desc")->get();
@@ -24,67 +64,19 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
-
-
-
-    <!-- icon-box1 -->
-    <section class="content-inner-3 overlay-white-dark"
-        style="background-image: url('images/background/bg2.jpg'); background-repeat: no-repeat; background-size: cover;">
-        <div class="container">
-            <div class="row justify-content-center gx-sm-1">
-                <div class="col-lg-4 col-md-4 col-sm-4 p-b30 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="icon-bx-wraper style-1 text-center">
-                        <div class="icon-bx">
-                            <i class="flaticon flaticon-fast-delivery"></i>
-                        </div>
-                        <div class="icon-content">
-                            <h3 class="dz-title m-b0">FREE SHIPPING</h3>
-                            <div class="square"></div>
-                            <p class="font-20">Enjoy free shipping on all orders - no minimum purchase required.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-4 p-b30 wow fadeInUp" data-wow-delay="0.2s">
-                    <div class="icon-bx-wraper style-1 text-center">
-                        <div class="icon-bx">
-                            <i class="flaticon flaticon-message"></i>
-                        </div>
-                        <div class="icon-content">
-                            <h3 class="dz-title m-b0">24/7 SUPPORT</h3>
-                            <div class="square"></div>
-                            <p class="font-20">Our team is available 24/7 to help with any questions or concerns.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-4 p-b30 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="icon-bx-wraper style-1 text-center">
-                        <div class="icon-bx">
-                            <i class="flaticon flaticon-money-back-guarantee"></i>
-                        </div>
-                        <div class="icon-content">
-                            <h3 class="dz-title m-b0">MONEY BACK</h3>
-                            <div class="square"></div>
-                            <p class="font-20">We offer a 100% money-back guarantee for your satisfaction.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- icon-box1 End-->
-
-
-
+    <marquee behavior="scroll" direction="left" scrollamount="6" class="marquee-container">
+    🚚 Enjoy Free Shipping Across Malaysia & Singapore! ✨ Min. Spend RM80 💳 Shop Now & Save More!
+    </marquee>
 
 
     <!--Recommend Section Start-->
-    <section class="content-inner-1">
+    <section class="content-inner-1 ">
         <div class="container">
             <div class="row">
 
                 <div class="col-xl-12">
                     <div class="wow fadeInUp" data-wow-delay="0.3s">
-                        <h3 class="title">Most popular products</h3>
+                        <h3 class="title">Our Latest products</h3>
                         <div class="site-filters clearfix d-flex align-items-center">
 
                             <a href="/products"
@@ -167,45 +159,58 @@
     </section>
     <!--Recommend Section End-->
 
-    <!-- Newsletter -->
-    <!--<section class="overlay-black-light newsletter-wrapper style-2"-->
-    <!--    style="background-image: url('{{ asset('web/images/background/bg4.jpg') }}'); background-repeat: no-repeat; background-size: cover;">-->
 
-    <!--    <div class="container">-->
-    <!--        <div class="subscride-inner wow fadeInUp" data-wow-delay="0.2s">-->
-    <!--            <div class="row justify-content-center text-center">-->
-    <!--                <div class="col-xl-12 col-lg-12">-->
-    <!--                    <div class="section-head">-->
-    <!--                        <h3 class="title">SUBSCRIBE TO OUR NEWSLETTER</h3>-->
-    <!--                        <p class="sub-title">Get latest news, offers and discounts.</p>-->
-    <!--                    </div>-->
-    <!--                    <form class="dzSubscribe" action="https://mooncart.dexignzone.com/xhtml/script/mailchamp.php"-->
-    <!--                        method="post">-->
-    <!--                        <div class="dzSubscribeMsg"></div>-->
-    <!--                        <div class="form-group">-->
-    <!--                            <div class="input-group mb-0">-->
-    <!--                                <input name="dzEmail" required="required" type="email" class="form-control"-->
-    <!--                                    placeholder="Your Email Address">-->
-    <!--                                <div class="input-group-addon">-->
-    <!--                                    <button name="submit" value="Submit" type="submit" class="btn">-->
-    <!--                                        <svg width="21" height="21" viewBox="0 0 21 21" fill="none">-->
-    <!--                                            <path d="M4.20972 10.7344H15.8717" stroke="#0D775E" stroke-width="2"-->
-    <!--                                                stroke-linecap="round" stroke-linejoin="round" />-->
-    <!--                                            <path d="M10.0408 4.90112L15.8718 10.7345L10.0408 16.5678"-->
-    <!--                                                stroke="#0D775E" stroke-width="2" stroke-linecap="round"-->
-    <!--                                                stroke-linejoin="round" />-->
-    <!--                                        </svg>-->
-    <!--                                    </button>-->
-    <!--                                </div>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
-    <!--                    </form>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
-    <!--</section>-->
 
+		<!-- Newsletter -->
+	    <section class="newsletter-wrapper style-1">
+			<div class="container">
+				<div class="subscride-inner">
+					<div class="row style-1 justify-content-xl-between justify-content-lg-center align-items-center text-xl-start text-center">
+						<div class="col-xl-6 col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
+							<div class="d-flex align-items-center justify-content-center justify-content-xl-start mb-3 mb-xl-0 flex-column flex-xl-row">
+								<img class="me-4" src="{{asset('web/images/svg/chat.svg')}}" alt="">
+								<div class="section-head mb-0">
+									<h3 class="title text-white">SUBSCRIBE TO OUR NEWSLETTER</h3>
+									<p class="sub-title text-white">Get latest news, offers and discounts.</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-6 col-lg-12 wow fadeInUp" data-wow-delay="0.2s">
+							<form class="dzSubscribe" action="https://mooncart.dexignzone.com/xhtml/script/mailchamp.php" method="post">
+								<div class="dzSubscribeMsg"></div>
+								<div class="form-group">
+									<div class="input-group mb-0">
+										<input name="dzEmail" required="required" type="email" class="form-control" placeholder="Your Email Address">
+										<div class="input-group-addon">
+											<button name="submit" value="Submit" type="submit" class="btn">
+												<svg width="21" height="21" viewBox="0 0 21 21" fill="none">
+													<path d="M4.20972 10.7344H15.8717" stroke="#0D775E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+													<path d="M10.0408 4.90112L15.8718 10.7345L10.0408 16.5678" stroke="#0D775E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+												</svg>
+											</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- Newsletter End -->
+
+        <br class="hide-on-mobile">
+
+            		<!-- Get In Touch -->
+		<section class="get-in-touch wow" data-wow-delay="0.3s" >
+			<div class="m-r100 m-md-r0 m-sm-r0">
+				<h3 class="dz-title mb-lg-0 mb-3">Questions ?
+					<span>Our experts will help find the grar that’s right for you</span>
+				</h3>
+			</div>
+			<a href="/faq" class="btn btn-light">Get In Touch</a>
+		</section>
+		<!-- Get In Touch End -->
 
 </div>
 

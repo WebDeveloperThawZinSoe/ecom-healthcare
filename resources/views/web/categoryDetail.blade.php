@@ -151,7 +151,7 @@
                                     @endif
 
                                     <!-- Pagination Elements -->
-                                    @foreach ($products->lin$()->elements[0] as $page => $url)
+                                    @foreach ($products->links()->elements[0] as $page => $url)
                                     @if ($page == $products->currentPage())
                                     <li class="page-item active"><span class="page-link"
                                             style="background-color:black !important;color:white !important;">{{ $page }}</span>

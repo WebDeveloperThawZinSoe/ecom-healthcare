@@ -40,7 +40,8 @@ class PageController extends Controller
         $Latest_products = Product::with(['category', 'subCategory', 'variants'])
         ->where("stock","!=",0)->where("status",1)->orderBy("id", "desc")
         ->limit(8)->get();
-        return view("web.index",compact("Latest_products"));
+        $brands =   Brand::inRandomOrder()->limit(6)->get();
+        return view("web.index",compact("Latest_products","brands"));
     }
 
     //category

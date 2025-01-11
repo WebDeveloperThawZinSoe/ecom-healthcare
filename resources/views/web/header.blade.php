@@ -84,9 +84,11 @@ $generalSettings = App\Models\GeneralSetting::whereIn('name', [
         <div class="main-bar dark clearfix">
             <div class="container clearfix">
                 <!-- Website Logo -->
-                <!-- <div class="logo-header logo-dark">
-                    <a href="index.html"><img src="{{ asset('images/general_settings/' . $logo->value) }}" alt="logo"></a>
-                </div> -->
+                <div class="logo-header logo-dark">
+                    <h2>
+                    {{ env('APP_NAME') }}
+                    </h2>
+                </div>
 
                 <!-- Nav Toggle Button -->
                 <button class="navbar-toggler collapsed navicon justify-content-end" type="button"

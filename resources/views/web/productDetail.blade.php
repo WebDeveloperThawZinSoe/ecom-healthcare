@@ -34,74 +34,55 @@
     <section class="content-inner py-0">
         <div class="container-fluid">
             <div class="row">
+                <!-- Product Gallery Section -->
                 <div class="col-xl-6 col-md-6">
                     <div class="dz-product-detail sticky-top">
                         <div class="swiper-btn-center-lr">
+                            <!-- Main Image Display -->
                             <div class="swiper product-gallery-swiper2">
                                 <div class="swiper-wrapper" id="lightgallery">
-                                    <!-- Main Image Display -->
                                     <div class="swiper-slide">
                                         <div class="dz-media DZoomImage">
                                             <a id="mainImageLink" data-lightbox="product-zoom"
                                                 href="{{ asset($detail_product->image) }}">
-                                                <!-- <i class="feather icon-maximize dz-maximize top-right"></i> -->
+                                                <img id="mainImage" src="{{ asset($detail_product->image) }}"
+                                                    alt="{{ $detail_product->name }}">
                                             </a>
-                                            <!-- Main Image -->
-                                            <img id="mainImage" src="{{ asset($detail_product->image) }}" alt="image">
                                         </div>
                                     </div>
-
-
-                                    <!-- Other Images -->
-                                    @if(!empty($detail_product->images))
-                                    <div class="swiper-slide">
-                                        <div class="dz-media DZoomImage">
-                                            <a data-lightbox="product-zoom" href="{{ asset($detail_product->image) }}">
-                                                <i class="feather icon-maximize dz-maximize top-right"></i>
-                                            </a>
-                                            <img src="{{ asset($detail_product->image) }}" alt="image">
-                                        </div>
-                                    </div>
-                                    @foreach($detail_product->images as $image)
+                                    <!-- Additional Images -->
+                                    @foreach($detail_product->images ?? [] as $image)
                                     <div class="swiper-slide">
                                         <div class="dz-media DZoomImage">
                                             <a data-lightbox="product-zoom" href="{{ asset($image) }}">
-                                                <i class="feather icon-maximize dz-maximize top-right"></i>
+                                                <img src="{{ asset($image) }}" alt="{{ $detail_product->name }}">
                                             </a>
-                                            <img src="{{ asset($image) }}" alt="image">
                                         </div>
                                     </div>
                                     @endforeach
-                                    @endif
                                 </div>
                             </div>
 
                             <!-- Thumbnail Swiper -->
                             <div class="swiper product-gallery-swiper thumb-swiper-lg swiper-vertical">
                                 <div class="swiper-wrapper">
-                                    <!-- Thumbnail Images -->
-                                    @if(!empty($detail_product->images))
-                                    @foreach($detail_product->images as $image)
                                     <div class="swiper-slide">
-                                        <img src="{{ asset($image) }}" alt="image"
+                                        <img src="{{ asset($detail_product->image) }}" alt="{{ $detail_product->name }}"
+                                            onclick="changeMainImage('{{ asset($detail_product->image) }}')">
+                                    </div>
+                                    @foreach($detail_product->images ?? [] as $image)
+                                    <div class="swiper-slide">
+                                        <img src="{{ asset($image) }}" alt="{{ $detail_product->name }}"
                                             onclick="changeMainImage('{{ asset($image) }}')">
                                     </div>
                                     @endforeach
-                                    @endif
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <script>
-                // JavaScript function to change the main image
-                function changeMainImage(imageUrl) {
-                    // Update the src of the main image
-                    document.getElementById('mainImage').src = imageUrl;
-                }
-                </script>
-
+                <!-- Product Details Section -->
                 <div class="col-xl-6 col-md-6">
                     <div class="dz-product-detail style-2 p-t50">
                         <div class="dz-content">
@@ -141,29 +122,35 @@
                             <div class="meta-content m-b20 d-flex align-items-end">
                                 <div class="me-3">
                                     <label class="form-label">Price</label>
+                                   
                                     <span class="price-num" id="product-price">
-                                        @if($detail_product->product_type == 1)
-                                        @if($detail_product->discount_type == 0)
-                                        {{$detail_product->price}} $
-                                        @elseif($detail_product->discount_type == 1)
-                                        @php $discount_price = $detail_product->price -
-                                        $detail_product->discount_amount; @endphp
-                                        <del>{{$detail_product->price}}</del> {{$discount_price}} $
-                                        @elseif($detail_product->discount_type == 2)
-                                        @php $discount_price = $detail_product->price - ( $detail_product->price *
-                                        ($detail_product->discount_amount / 100 )); @endphp
-                                        <del>{{$detail_product->price}}</del> {{$discount_price}} $
-                                        @endif
-                                        @elseif($detail_product->product_type == 2)
                                         @php
-                                        $minPrice = $detail_product->variants->min('price');
-                                        $maxPrice = $detail_product->variants->max('price');
-                                        echo $minPrice . " ~ " . $maxPrice . " $" ;
+                                            $currencySymbol = "$";
+
+                                            if ($detail_product->product_type == 1) {
+                                                $price = $detail_product->price;
+                                               
+                                                if ($detail_product->discount_type == 1) {
+                                                    $discountPrice = $price - $detail_product->discount_amount;
+                                                    $priceDisplay = "<del>$price</del> $discountPrice";
+                                                } elseif ($detail_product->discount_type == 2) {
+                                                    $discountPrice = $price - ($price * ($detail_product->discount_amount / 100));
+                                                    $priceDisplay = "<del>$price</del> $discountPrice";
+                                                } else {
+                                                    $priceDisplay = $price;
+                                                }
+
+                                                echo $priceDisplay . " " . $currencySymbol;
+                                            } elseif ($detail_product->product_type == 2) {
+                                                $minPrice = $detail_product->variants->min('price');
+                                                $maxPrice = $detail_product->variants->max('price');
+                                                echo "$minPrice ~ $maxPrice $currencySymbol";
+                                            }
                                         @endphp
-                                        @endif
                                     </span>
                                 </div>
                             </div>
+
 
                             @if($detail_product->variants->count() > 0)
                             <div class="product-variants">
@@ -173,36 +160,42 @@
                                     $groupedVariants = $detail_product->variants->groupBy('attribute_name');
                                     @endphp
                                     @foreach($groupedVariants as $attributeName => $variants)
-                                    <div class="variant-group">
-                                        <h5 class="variant-attribute-name">{{ $attributeName }}</h5>
-                                        @foreach($variants as $variant)
-                                        @if($variant->stock != 0 && $variant->status == 1)
-                                        @php
-                                        $varaint_product_price = $variant->price;
-                                        $v_discount_type = $variant->discount_type;
-                                        $v_discount_amount = $variant->discount_amount;
-                                        if($v_discount_type == 0){
-                                        $varaint_product_price = $varaint_product_price;
-                                        }elseif($v_discount_type == 1){
-                                        $varaint_product_price = $varaint_product_price - $v_discount_amount ;
-                                        }elseif($v_discount_amount == 2){
-                                        $varaint_product_price = $varaint_product_price - ( $v_discount_amount *
-                                        ($v_discount_amount/100) ) ;
-                                        }
+                                        <div class="variant-group">
+                                            <h5 class="variant-attribute-name">{{ $attributeName }}</h5>
+                                            @foreach($variants as $variant)
+                                                @if($variant->stock > 0 && $variant->status == 1)
+                                                    @php
+                                                        $variantProductPrice = $variant->price;
+                                                        $discountType = $variant->discount_type;
+                                                        $discountAmount = $variant->discount_amount;
 
+                                                        switch ($discountType) {
+                                                            case 1: // Fixed amount discount
+                                                                $variantProductPrice -= $discountAmount;
+                                                                $showPrice = "<del>{$variant->price}</del> $variantProductPrice";
+                                                                break;
+                                                            case 2: // Percentage discount
+                                                                $variantProductPrice -= $variantProductPrice * ($discountAmount / 100);
+                                                                $showPrice = "<del>{$variant->price}</del> $variantProductPrice";
+                                                                break;
+                                                            default: // No discount
+                                                                $showPrice = $variantProductPrice;
+                                                                break;
+                                                        }
+                                                    @endphp
 
-                                        @endphp
-                                        <label class="btn btn-outline-secondary variant-option"
-                                            data-price="{{ $varaint_product_price }}"
-                                            data-image="{{ asset($variant->image) }}">
-                                            <input type="radio" name="product_variant" value="{{ $variant->id }}"
-                                                class="d-none">
-                                            {{ $variant->attribute_value ?? 'Default' }}
-                                        </label>
-                                        @endif
-                                        @endforeach
-                                    </div>
+                                                    <label class="btn btn-outline-secondary variant-option"
+                                                        data-price="{{ $variantProductPrice }}"
+                                                        data-image="{{ asset($variant->image) }}"
+                                                        data-showPrice="{{ $showPrice }}">
+                                                        <input type="radio" name="product_variant" value="{{ $variant->id }}" class="d-none">
+                                                        {{ $variant->attribute_value ?? 'Default' }}
+                                                    </label>
+                                                @endif
+                                            @endforeach
+                                        </div>
                                     @endforeach
+
                                 </div>
                             </div>
                             @endif
@@ -236,105 +229,86 @@
                     </div>
                 </div>
 
-                <script>
-                // JavaScript function to change the main image and update Lightbox link
-                function changeMainImage(imageUrl) {
-                    document.getElementById('mainImage').src = imageUrl;
-                    document.getElementById('mainImageLink').href = imageUrl;
-                }
-
-                // Variant selection event handler
-                document.querySelectorAll('.variant-option').forEach(button => {
-                    button.addEventListener('click', function() {
-                        button.querySelector('input').checked = true;
-                        document.querySelectorAll('.variant-option').forEach(btn => btn.classList
-                            .remove('active'));
-                        button.classList.add('active');
-
-                        // Update product price based on selected variant
-                        const variantPrice = button.getAttribute('data-price');
-                        document.getElementById('product-price').innerText = variantPrice + ' $';
-
-                        // Set the selected variant ID in the hidden form field
-                        document.getElementById('variant_id').value = button.querySelector('input')
-                            .value;
-
-                        // Update main image based on selected variant's image
-                        const variantImage = button.getAttribute('data-image');
-                        if (variantImage) {
-                            changeMainImage(variantImage);
-                        }
-                    });
-                });
-                // Handle variant selection
-                // document.querySelectorAll('.variant-option').forEach(button => {
-                //     button.addEventListener('click', function() {
-                //         button.querySelector('input').checked = true;
-                //         document.querySelectorAll('.variant-option').forEach(btn => btn.classList
-                //             .remove('active'));
-                //         button.classList.add('active');
-
-                //         // Update product price based on selected variant
-                //         const variantPrice = button.getAttribute('data-price');
-                //         document.getElementById('product-price').innerText = variantPrice + ' $';
-
-                //         // Set the selected variant ID in the hidden form field
-                //         document.getElementById('variant_id').value = button.querySelector('input')
-                //             .value;
-
-                //         // Update main image based on selected variant's image
-                //         const variantImage = button.getAttribute('data-image');
-                //         if (variantImage) {
-                //             document.getElementById('mainImage').src = variantImage;
-                //             document.getElementById('mainImageLink').href = variantImage;
-
-                //         }
-                //     });
-                // });
-
-                // Handle quantity increase and decrease
-                const quantityInput = document.getElementById('quantity');
-                const increaseButton = document.getElementById('increase-qty');
-                const decreaseButton = document.getElementById('decrease-qty');
-
-                increaseButton.addEventListener('click', function() {
-                    let currentQuantity = parseInt(quantityInput.value);
-                    quantityInput.value = currentQuantity + 1;
-                    document.getElementById('form-quantity').value = quantityInput.value;
-                });
-
-                decreaseButton.addEventListener('click', function() {
-                    let currentQuantity = parseInt(quantityInput.value);
-                    if (currentQuantity > 1) {
-                        quantityInput.value = currentQuantity - 1;
-                        document.getElementById('form-quantity').value = quantityInput.value;
-                    }
-                });
-
-                // Update form-quantity hidden field when quantity is changed manually
-                quantityInput.addEventListener('change', function() {
-                    document.getElementById('form-quantity').value = this.value;
-                });
-
-                // Prevent form submission if variant is not selected
-                document.getElementById('add-to-cart-btn').addEventListener('click', function(event) {
-                    const selectedVariant = document.querySelector('input[name="product_variant"]:checked');
-                    if (!selectedVariant) {
-                        event.preventDefault();
-                        alert('Please select a product variant.');
-                    }
-                });
-                </script>
-
-
-
-
-
-
-
             </div>
         </div>
     </section>
+
+
+    <script>
+    // JavaScript function to change the main image and update Lightbox link
+    function changeMainImage(imageUrl) {
+        document.getElementById('mainImage').src = imageUrl;
+        document.getElementById('mainImageLink').href = imageUrl;
+    }
+
+    // Variant selection event handler
+    document.querySelectorAll('.variant-option').forEach(button => {
+        button.addEventListener('click', function() {
+            button.querySelector('input').checked = true;
+            document.querySelectorAll('.variant-option').forEach(btn => btn.classList
+                .remove('active'));
+            button.classList.add('active');
+           
+            // Update product price based on selected variant
+            const variantPrice = button.getAttribute('data-price');
+            const show_price = button.getAttribute('data-showPrice');
+           
+         
+            /* Check The Discount and Calcuate the price */
+         
+            let currency = "$";
+          
+            document.getElementById('product-price').innerHTML = show_price + currency;
+
+            // Set the selected variant ID in the hidden form field
+            document.getElementById('variant_id').value = button.querySelector('input')
+                .value;
+
+            // Update main image based on selected variant's image
+            const variantImage = button.getAttribute('data-image');
+            if (variantImage) {
+                changeMainImage(variantImage);
+            }
+        });
+    });
+
+
+    // Handle quantity increase and decrease
+    const quantityInput = document.getElementById('quantity');
+    const increaseButton = document.getElementById('increase-qty');
+    const decreaseButton = document.getElementById('decrease-qty');
+
+    increaseButton.addEventListener('click', function() {
+        let currentQuantity = parseInt(quantityInput.value);
+        quantityInput.value = currentQuantity + 1;
+        document.getElementById('form-quantity').value = quantityInput.value;
+    });
+
+    decreaseButton.addEventListener('click', function() {
+        let currentQuantity = parseInt(quantityInput.value);
+        if (currentQuantity > 1) {
+            quantityInput.value = currentQuantity - 1;
+            document.getElementById('form-quantity').value = quantityInput.value;
+        }
+    });
+
+    // Update form-quantity hidden field when quantity is changed manually
+    quantityInput.addEventListener('change', function() {
+        document.getElementById('form-quantity').value = this.value;
+    });
+
+    // Prevent form submission if variant is not selected
+    document.getElementById('add-to-cart-btn').addEventListener('click', function(event) {
+        const selectedVariant = document.querySelector('input[name="product_variant"]:checked');
+        if (!selectedVariant) {
+            event.preventDefault();
+            alert('Please select a product variant.');
+        }
+    });
+    </script>
+
+
+
 
     <section class="content-inner-3 pb-0">
         <div class="container">
@@ -366,9 +340,6 @@
                 <div class="left-content">
                     <h2 class="title mb-0">Related products</h2>
                 </div>
-                <a href="/products" class="text-secondary font-14 d-flex align-items-center gap-1">See all products
-                    <i class="icon feather icon-chevron-right font-18"></i>
-                </a>
             </div>
             <div class="swiper-btn-center-lr">
                 <div class="row">
@@ -435,27 +406,31 @@
                                         <h6 class="price" style="color:black !important;">
                                             @if($product->product_type == 1)
                                             @if($product->discount_type == 0)
-                                            {{$product->price}} $
+                                            {{$product->price}} 
+                                            $
                                             @elseif($product->discount_type == 1)
                                             @php
                                             $discount_price = $product->price - $product->discount_amount;
                                             @endphp
                                             <del>{{$product->price}} </del>
-                                            {{$discount_price}} $
+                                            {{$discount_price}} 
+                                            $
                                             @elseif($product->discount_type == 2)
                                             @php
                                             $discount_price = $product->price - ( $product->price * (
                                             $product->discount_amount / 100 ));
                                             @endphp
                                             <del>{{$product->price}} </del>
-                                            {{$discount_price}} $
+                                            {{$discount_price}} 
+                                            $
                                             @endif
                                             @elseif($product->product_type == 2)
                                             @php
                                             $minPrice = $product->variants->min('price');
                                             $maxPrice = $product->variants->max('price');
-                                            echo $minPrice . " ~ " . $maxPrice . " $" ;
+                                            echo $minPrice . " ~ " . $maxPrice ;
                                             @endphp
+                                            $
                                             @endif
 
                                         </h6>
@@ -464,7 +439,8 @@
                                     <div class="product-tag">
                                         <span class="badge badge-secondary">Sale |
                                             @if($product->discount_type == 1)
-                                            {{$product->discount_amount}} $ OFF
+                                            {{$product->discount_amount}} 
+                                            $ OFF
                                             @elseif($product->discount_type == 2)
                                             {{$product->discount_amount}} % OFF
                                             @endif
