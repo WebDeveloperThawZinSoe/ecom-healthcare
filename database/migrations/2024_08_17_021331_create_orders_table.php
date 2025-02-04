@@ -18,13 +18,18 @@ return new class extends Migration
             $table->string("name");
             $table->string("email")->nullalbe();
             $table->string("phone")->nullable();
-            $table->string("region")->nullable();
+            $table->string("country")->nullable();
+            $table->string("city")->nullalbe();
+            $table->string("city_zip_code")->nullable();
             $table->text("address")->nullable();
             $table->string('payment_method');
             $table->string('payment_slip')->nullable();
             $table->decimal('total_price', 8, 1);
             $table->integer("payment_status")->default(0);
             $table->text("note")->nullable();
+            $table->string("payment_currency")->nullable();
+            $table->string("payment_currency_rate")->nullable();
+            $table->string("payment_currency_price")->nullable();
             $table->timestamps();
         });        
     }

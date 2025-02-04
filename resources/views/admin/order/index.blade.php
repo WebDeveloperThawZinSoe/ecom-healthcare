@@ -80,7 +80,7 @@
                                                 {{ App\Models\Order::where("user_id", $order->user->id)->count() }}</h6>
                                             <h6>Orders Total Amount:
                                                 {{ number_format(App\Models\Order::where("user_id", $order->user->id)->sum("total_price"), 1) }}
-                                                Ks</h6>
+                                                $</h6>
                                             <table class="table">
                                                 <thead>
                                                     <tr>
@@ -99,7 +99,7 @@
                                                     @foreach($userOrders as $userOrder)
                                                     <tr>
                                                         <td>{{ $userOrder->order_number }}</td>
-                                                        <td>{{ number_format($userOrder->total_price, 1) }} Ks</td>
+                                                        <td>{{ number_format($userOrder->total_price, 1) }} $</td>
                                                         <td>{{ $userOrder->created_at->format('F j, Y') }}</td>
                                                     </tr>
                                                     @endforeach
@@ -195,11 +195,11 @@
                                             <h6>Customer: {{ $order->user->name ?? 'Guest' }}</h6>
                                             <h6>Email: {{ $order->user->email ?? 'N/A' }}</h6>
                                             <h6>Phone: {{ $order->user->phone ?? 'N/A' }}</h6>
-                                            <h6>Total Price: {{ number_format($order->total_price, 1) }} Ks</h6>
+                                            <h6>Total Price: {{ number_format($order->total_price, 1) }} $</h6>
 
                                             <hr>
                                             <h4>Delivery Information</h4>
-                                            <h6>Region: {{ $order->region }}</h6>
+                                            <h6>country: {{ $order->country }}</h6>
                                             <h6>Address: {{ $order->address }}</h6>
                                             <hr>
                                             <h3>Billing Information</h3>
@@ -257,7 +257,7 @@
                                                         ($DiscountAmount / 100)));
                                                         } 
 
-                                                        echo number_format($finalPrice, 1) . " Ks";
+                                                        echo number_format($finalPrice, 1) . " $";
                                                         
                                                         ?>
                                                     </td>

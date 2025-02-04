@@ -10,6 +10,9 @@
         max-width: 50px;
     }
 }
+#coupon{
+    border:1px solid black;
+}
 </style>
 
 <div class="page-content">

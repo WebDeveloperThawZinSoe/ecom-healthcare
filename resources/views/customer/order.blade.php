@@ -8,7 +8,7 @@
                 <div class="card mb-3">
                     <div class="card-body">
                         <h5 class="card-title">Order #{{ $order->order_number }}</h5>
-                        <p class="card-text">Total Price: {{ $order->total_price }} Ks</p>
+                        <p class="card-text">Total Price: {{ $order->total_price }} $</p>
                         <p class="card-text">
                             Status: 
                             @if($order->status == 1)

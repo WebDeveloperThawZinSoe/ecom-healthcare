@@ -93,40 +93,40 @@
                             </div>
                         </div>
 
-                        <!-- Region -->
+                        <!-- country -->
                         <div class="col-md-12">
                             <div class="m-b25">
-                                <label class="label-title">Region *</label>
+                                <label class="label-title">country *</label>
                                 <div class="form-select">
-                                    <select name="region" class="default-select w-100">
-                                        <option value="Yangon" {{ old('region') == 'Yangon' ? 'selected' : '' }}>Yangon
+                                    <select name="country" class="default-select w-100">
+                                        <option value="Yangon" {{ old('country') == 'Yangon' ? 'selected' : '' }}>Yangon
                                         </option>
-                                        <option value="Mandalay" {{ old('region') == 'Mandalay' ? 'selected' : '' }}>
+                                        <option value="Mandalay" {{ old('country') == 'Mandalay' ? 'selected' : '' }}>
                                             Mandalay</option>
                                         <option value="Ayeyarwady"
-                                            {{ old('region') == 'Ayeyarwady' ? 'selected' : '' }}>Ayeyarwady</option>
-                                        <option value="Bago" {{ old('region') == 'Bago' ? 'selected' : '' }}>Bago
+                                            {{ old('country') == 'Ayeyarwady' ? 'selected' : '' }}>Ayeyarwady</option>
+                                        <option value="Bago" {{ old('country') == 'Bago' ? 'selected' : '' }}>Bago
                                         </option>
-                                        <option value="Magway" {{ old('region') == 'Magway' ? 'selected' : '' }}>Magway
+                                        <option value="Magway" {{ old('country') == 'Magway' ? 'selected' : '' }}>Magway
                                         </option>
-                                        <option value="Sagaing" {{ old('region') == 'Sagaing' ? 'selected' : '' }}>
+                                        <option value="Sagaing" {{ old('country') == 'Sagaing' ? 'selected' : '' }}>
                                             Sagaing</option>
                                         <option value="Tanintharyi"
-                                            {{ old('region') == 'Tanintharyi' ? 'selected' : '' }}>Tanintharyi</option>
-                                        <option value="Kachin" {{ old('region') == 'Kachin' ? 'selected' : '' }}>Kachin
+                                            {{ old('country') == 'Tanintharyi' ? 'selected' : '' }}>Tanintharyi</option>
+                                        <option value="Kachin" {{ old('country') == 'Kachin' ? 'selected' : '' }}>Kachin
                                         </option>
-                                        <option value="Kayah" {{ old('region') == 'Kayah' ? 'selected' : '' }}>Kayah
+                                        <option value="Kayah" {{ old('country') == 'Kayah' ? 'selected' : '' }}>Kayah
                                         </option>
-                                        <option value="Kayin" {{ old('region') == 'Kayin' ? 'selected' : '' }}>Kayin
+                                        <option value="Kayin" {{ old('country') == 'Kayin' ? 'selected' : '' }}>Kayin
                                         </option>
-                                        <option value="Chin" {{ old('region') == 'Chin' ? 'selected' : '' }}>Chin
+                                        <option value="Chin" {{ old('country') == 'Chin' ? 'selected' : '' }}>Chin
                                         </option>
-                                        <option value="Mon" {{ old('region') == 'Mon' ? 'selected' : '' }}>Mon</option>
-                                        <option value="Rakhine" {{ old('region') == 'Rakhine' ? 'selected' : '' }}>
+                                        <option value="Mon" {{ old('country') == 'Mon' ? 'selected' : '' }}>Mon</option>
+                                        <option value="Rakhine" {{ old('country') == 'Rakhine' ? 'selected' : '' }}>
                                             Rakhine</option>
-                                        <option value="Shan" {{ old('region') == 'Shan' ? 'selected' : '' }}>Shan
+                                        <option value="Shan" {{ old('country') == 'Shan' ? 'selected' : '' }}>Shan
                                         </option>
-                                        <option value="Naypyidaw" {{ old('region') == 'Naypyidaw' ? 'selected' : '' }}>
+                                        <option value="Naypyidaw" {{ old('country') == 'Naypyidaw' ? 'selected' : '' }}>
                                             Naypyidaw</option>
 
                                     </select>

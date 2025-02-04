@@ -86,7 +86,7 @@
                                     <tr>
                                         <td>{{++$key}}</td>
                                         <td>{{$latest_order->order_number}}</td>
-                                        <td>{{$latest_order->total_price}} Ks</td>
+                                        <td>{{$latest_order->total_price}} $</td>
                                         <td>
                                             <?php 
                                             if($latest_order->status == 1){

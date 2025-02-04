@@ -53,7 +53,7 @@
                             @if($cupon->type == 0)
                             Nothing
                             @elseif($cupon->type == 1)
-                            Amount ( {{$cupon->amount}} Ks )
+                            Amount ( {{$cupon->amount}} $ )
                             @elseif($cupon->type == 2)
                             Percentage (  {{$cupon->amount}} % )
                             @endif

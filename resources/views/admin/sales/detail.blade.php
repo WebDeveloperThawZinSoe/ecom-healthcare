@@ -22,7 +22,7 @@
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $order->order_number }}</td>
                             <td>{{ $order->created_at->format('d - m - Y H:i') }}</td>
-                            <td>{{ $order->total_price }} Ks</td>
+                            <td>{{ $order->total_price }} $</td>
                             <td>
                                 <a href="/admin/sales/order/{{$order->id}}" class="btn btn-info" >
                                 <i class="anticon anticon-eye"></i>

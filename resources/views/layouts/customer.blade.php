@@ -102,78 +102,65 @@
             <!-- Side Nav START -->
             <div class="side-nav">
                 <div class="side-nav-inner">
-                    <ul class="side-nav-menu scrollable">
-                        <li class="nav-item dropdown open">
-                            <a href="{{route('customer.dashboard')}}">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-dashboard"></i>
-                                </span>
-                                <span class="title">Dashboard</span>
+                   <ul class="side-nav-menu scrollable">
+    <li class="nav-item dropdown open">
+        <a href="{{route('customer.dashboard')}}">
+            <span class="icon-holder">
+                <i class="anticon anticon-dashboard"></i>
+            </span>
+            <span class="title">Dashboard</span>
+        </a>
+    </li>
 
-                            </a>
+    <li class="nav-item dropdown open">
+        <a href="/">
+            <span class="icon-holder">
+                <i class="anticon anticon-shopping-cart"></i>
+            </span>
+            <span class="title">Shopping</span>
+        </a>
+    </li>
 
-                        </li>
+    <li class="nav-item dropdown open">
+        <a href="/auth/order">
+            <span class="icon-holder">
+                <i class="anticon anticon-profile"></i>
+            </span>
+            <span class="title">Order</span>
+        </a>
+    </li>
 
-                        <li class="nav-item dropdown open">
-                            <a href="/">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-dashboard"></i>
-                                </span>
-                                <span class="title">Shopping</span>
+    <li class="nav-item dropdown open">
+        <a href="/cart">
+            <span class="icon-holder">
+                <i class="anticon anticon-shopping"></i>
+            </span>
+            <span class="title">Cart</span>
+        </a>
+    </li>
 
-                            </a>
+    <li class="nav-item dropdown open">
+        <a href="/auth/general_settings">
+            <span class="icon-holder">
+                <i class="anticon anticon-setting"></i>
+            </span>
+            <span class="title">Setting</span>
+        </a>
+    </li>
 
-                        </li>
+    <li class="nav-item dropdown open">
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <span class="icon-holder">
+                <i class="anticon anticon-logout"></i>
+            </span>
+            <span class="title">Logout</span>
+        </a>
+    </li>
+</ul>
 
-                        <li class="nav-item dropdown open">
-                            <a href="/auth/order">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Order</span>
-
-                            </a>
-
-                        </li>
-
-                       
-
-                        <li class="nav-item dropdown open">
-                            <a href="/cart">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Cart</span>
-
-                            </a>
-
-                        </li>
-
-                       
-                        <li class="nav-item dropdown open">
-                            <a href="/auth/general_settings">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Setting</span>
-
-                            </a>
-
-                        </li>
-                        <li class="nav-item dropdown open">
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                            <a href="#"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-logout"></i>
-                                </span>
-                                <span class="title">Logout</span>
-                            </a>
-                        </li>
-
-                    </ul>
                 </div>
             </div>
             <!-- Side Nav END -->

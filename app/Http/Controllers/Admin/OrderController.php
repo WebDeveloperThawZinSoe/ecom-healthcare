@@ -392,7 +392,7 @@ class OrderController extends Controller
             "name" => $user->name,
             "phone" => $user->phone,
             'order_number' => 'ORD-' . strtoupper(uniqid()),
-            'region' => "Yangon",
+            'country' => "Yangon",
             'address' => "Shop",
             'user_id' => $user_id, 
             'payment_method' => 0,

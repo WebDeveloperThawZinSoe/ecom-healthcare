@@ -43,7 +43,7 @@ class StripeController extends Controller
                     'name' => $request->name,
                     'email' => $request->email,
                     'phone' => $request->phone,
-                    'region' => $request->region,
+                    'country' => $request->country,
                     'address' => $request->address,
                     'payment_method' => 'stripe',
                     'total_price' => $request->total_price,

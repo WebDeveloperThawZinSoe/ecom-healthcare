@@ -9,7 +9,7 @@
             <span class="badge bg-warning" style="color:white !important;">Pre Order</span>
             @endif
             <p><strong>Name:</strong> {{ $product->name }}</p>
-            <p><strong>Price:</strong> {{ $product->price }} Ks</p>
+            <p><strong>Price:</strong> {{ $product->price }} $</p>
             <p><strong>Stock:</strong> {{ $product->stock }}</p>
            
             <p><strong>Category:</strong> {{ $product->category->name ?? 'N/A' }}</p>
@@ -63,7 +63,7 @@
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $variant->attribute_name }}</td>
                             <td>{{ $variant->attribute_value }}</td>
-                            <td>{{ $variant->price }} Ks</td>
+                            <td>{{ $variant->price }} $</td>
                             <td>{{ $variant->stock }}</td>
                             <td>{{ $variant->status == 1 ? 'Active' : 'Inactive' }}</td>
                             <td>

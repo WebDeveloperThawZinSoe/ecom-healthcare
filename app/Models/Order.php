@@ -15,7 +15,9 @@ class Order extends Model
         'name',
         'email',
         'phone',
-        'region',
+        'country',
+        'city',
+        'city_zip_code',
         'address',
         'payment_method',
         'payment_slip',
@@ -24,7 +26,10 @@ class Order extends Model
         'payment_account_name',
         'status',
         "payment_status",
-        "cupon_code_id"
+        "cupon_code_id",
+        "payment_currency",
+        "payment_currency_rate",
+        "payment_currency_price"
     ];
 
     public function user()

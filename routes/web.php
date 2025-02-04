@@ -29,6 +29,8 @@ use App\Http\Controllers\Admin\AdminCartController;
 use App\Http\Controllers\Admin\GoalController;
 use App\Http\Controllers\Admin\SupplyController;
 use App\Http\Controllers\Admin\CuponCodeController;
+use App\Http\Controllers\Admin\CurrencyController;
+use App\Http\Controllers\Admin\AdminDeliveryController;
 use App\Http\Controllers\UpdateCodeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\CartController;
@@ -37,6 +39,9 @@ use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UserOrderController;
 use App\Http\Controllers\VIPRequestController;
 use App\Http\Controllers\Auth\SocialAuthController;
+
+
+
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -83,6 +88,18 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/cart/remove/{id}', [OrderController::class, 'removeData'])->name('cart.remove');
     Route::post('/orders/cart/user.add', [OrderController::class, 'addToCart'])->name('cart.add');
     Route::post("/orders/card/user/checkout",[OrderController::class, 'OrderCheckOut'])->name("cart.checkout");
+    /* Currency */
+
+    Route::get("/currency", [CurrencyController::class, "index"])->name("currency.index");
+    Route::post("/currency/store", [CurrencyController::class, "store"])->name("currency.store");
+    Route::put("/currency/update/{id}", [CurrencyController::class, "update"])->name("currency.update");
+    Route::delete("/currency/destroy/{id}", [CurrencyController::class, "destroy"])->name("currency.destroy");
+    
+    Route::get("/delivery", [AdminDeliveryController::class, "index"])->name("delivery.index");
+    Route::post("/delivery/store", [AdminDeliveryController::class, "store"])->name("delivery.store");
+    Route::put("/delivery/update/{id}", [AdminDeliveryController::class, "update"])->name("delivery.update");
+    Route::delete("/delivery/destroy/{id}", [AdminDeliveryController::class, "destroy"])->name("delivery.destroy");
+    
 
 });
 

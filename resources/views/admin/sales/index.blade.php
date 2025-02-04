@@ -35,7 +35,7 @@
                                 <i class="anticon anticon-dollar"></i>
                             </div>
                             <div class="m-l-15">
-                                <h2 class="m-b-0">{{ $todaySales }} Ks</h2>
+                                <h2 class="m-b-0">{{ $todaySales }} $</h2>
                                 <p class="m-b-0 text-muted">Today Sale Volume</p>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                                 <i class="anticon anticon-line-chart"></i>
                             </div>
                             <div class="m-l-15">
-                                <h2 class="m-b-0">{{ $weeklySales }} Ks</h2>
+                                <h2 class="m-b-0">{{ $weeklySales }} $</h2>
                                 <p class="m-b-0 text-muted">Weekly Sale Volume</p>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                                 <i class="anticon anticon-line-chart"></i>
                             </div>
                             <div class="m-l-15">
-                                <h2 class="m-b-0">{{ $monthlySales }} Ks</h2>
+                                <h2 class="m-b-0">{{ $monthlySales }} $</h2>
                                 <p class="m-b-0 text-muted">Monthly Sale Volume</p>
                             </div>
                         </div>
@@ -91,7 +91,7 @@
                             <td>{{++$index}}</td>
                             <td>{{ \Carbon\Carbon::parse($order->date)->format('d - m - Y') }}</td>
                             <td>{{ $order->sale_count }}</td>
-                            <td>{{ $order->total_amount }} Ks</td>
+                            <td>{{ $order->total_amount }} $</td>
                             <td>
                             <a href="/admin/sales/{{$order->date}}" class="btn btn-info" >
                                 <i class="anticon anticon-eye"></i>

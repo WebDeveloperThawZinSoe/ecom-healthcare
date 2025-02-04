@@ -39,25 +39,25 @@
                                         <h6 class="price" style="color:black !important;">
                                             @if($product->product_type == 1)
                                                 @if($product->discount_type == 0)
-                                                    {{$product->price}} Ks
+                                                    {{$product->price}} $
                                                 @elseif($product->discount_type == 1)
                                                     @php
                                                         $discount_price = $product->price - $product->discount_amount;
                                                     @endphp
                                                     <del>{{$product->price}} </del>
-                                                    {{$discount_price}} Ks
+                                                    {{$discount_price}} $
                                                 @elseif($product->discount_type == 2)
                                                     @php
                                                         $discount_price = $product->price - ( $product->price * ( $product->discount_amount / 100 ));
                                                     @endphp
                                                     <del>{{$product->price}} </del>
-                                                    {{$discount_price}} Ks
+                                                    {{$discount_price}} $
                                                 @endif
                                             @elseif($product->product_type == 2)
                                                 @php
                                                     $minPrice = $product->variants->min('price');
                                                     $maxPrice = $product->variants->max('price');
-                                                    echo $minPrice . " ~ " . $maxPrice . " Ks" ;
+                                                    echo $minPrice . " ~ " . $maxPrice . " $" ;
                                                 @endphp
                                             @endif
 
@@ -67,7 +67,7 @@
                                     <div class="product-tag">
                                         <span class="badge badge-secondary">Sale |
                                             @if($product->discount_type == 1)
-                                            {{$product->discount_amount}} Ks OFF
+                                            {{$product->discount_amount}} $ OFF
                                             @elseif($product->discount_type == 2)
                                             {{$product->discount_amount}} % OFF
                                             @endif

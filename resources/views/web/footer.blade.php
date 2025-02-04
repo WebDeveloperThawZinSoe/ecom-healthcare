@@ -71,7 +71,7 @@ $generalSettings =  App\Models\GeneralSetting::whereIn('name', [
                                     $categories = App\Models\ProductCategory::orderBy("id","asc")->limit(6)->get();
                                 @endphp
                                 @foreach($categories as $category)
-								<li><a href="/category/{{$category->id}}">{{$category->name}}</a></li>
+								<li><a href="/products/category/{{$category->id}}">{{$category->name}}</a></li>
 								@endforeach
 							</ul>   
 						</div>

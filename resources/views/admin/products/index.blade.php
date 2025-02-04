@@ -57,12 +57,12 @@
                         <td>{{ $product->name }}</td>
                         <td>
                             @if($product->product_type == 1)
-                            {{ $product->price }} Ks
+                            {{ $product->price }} $
                             @elseif($product->product_type = 2)
                             @php
                             $minPrice = $product->variants->min('price');
                             $maxPrice = $product->variants->max('price');
-                            echo $minPrice . " ~ " . $maxPrice . " Ks" ;
+                            echo $minPrice . " ~ " . $maxPrice . " $" ;
                             @endphp
                             @endif
                         </td>
@@ -97,7 +97,7 @@
                             @if($product->discount_type == 0)
                             Nothing
                             @elseif($product->discount_type == 1)
-                            Amount ( {{$product->discount_amount}} Ks )
+                            Amount ( {{$product->discount_amount}} $ )
                             @elseif($product->discount_type == 2)
                             Percentage (  {{$product->discount_amount}} % )
                             @endif

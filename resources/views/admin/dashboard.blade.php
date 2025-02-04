@@ -10,13 +10,13 @@
                     <br>
                     <h3>Admin Dashboard</h3>
                 </div>
-                <div class="card-body">
-                    <p>Welcome back {{Auth::user()->name}} </p>
-                    <p>Domain , Hosting , Technical Support Expire : <span class="badge badge-danger"> 23 May 2026 </span></p>
-                    <p>Technical Support Expire : <span class="badge badge-danger"> 1 January 2027 </span></p>
-                    <p>Developer Information : <a target="_blank" href="telto:09403077739">+959403077739</a> , <a target="_blank" href="mailto:thawzinsoe.dev@gmail.com">thawzinsoe.dev@gmail.com</a> , <a target="_blank" href="https://thawzinsoe.com">https://thawzinsoe.com</a> </p>
+                <!--<div class="card-body">-->
+                <!--    <p>Welcome back {{Auth::user()->name}} </p>-->
+                <!--    <p>Domain , Hosting , Technical Support Expire : <span class="badge badge-danger"> 23 May 2026 </span></p>-->
+                <!--    <p>Technical Support Expire : <span class="badge badge-danger"> 1 January 2027 </span></p>-->
+                <!--    <p>Developer Information : <a target="_blank" href="telto:09403077739">+959403077739</a> , <a target="_blank" href="mailto:thawzinsoe.dev@gmail.com">thawzinsoe.dev@gmail.com</a> , <a target="_blank" href="https://thawzinsoe.com">https://thawzinsoe.com</a> </p>-->
                     <!-- Add dashboard content here -->
-                </div>
+                <!--</div>-->
                 @elseif(Auth::user()->role == 3)
                 <div class="card-header">
                     <br>
@@ -38,7 +38,7 @@
                                 <i class="anticon anticon-dollar"></i>
                             </div>
                             <div class="m-l-15">
-                                <h2 class="m-b-0">{{$totalPrice}} Ks</h2>
+                                <h2 class="m-b-0">{{$totalPrice}} $</h2>
                                 <p class="m-b-0 text-muted">Total Sale</p>
                             </div>
                         </div>

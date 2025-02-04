@@ -158,6 +158,30 @@ marquee {
         </div>
     </section>
     <!--Recommend Section End-->
+    
+        <!-- Feature Box -->
+    <section class="content-inner">
+        <div class="container">
+            <h2>Some Brands On Our Plantform</h2>
+            <br>
+            <div class="row">
+
+
+                @foreach($brands as $brand)
+                <div class="col-lg-2 col-md-3 col-sm-4 col-4 wow fadeInUp" data-wow-delay="0.1s">
+                    <a href="/brands/{{$brand->id}}">
+                        <div class="gift-bx">
+                            <div class="gift-media">
+                                <img src="{{ asset('images/brands/' . $brand->icon) }}" loading="lazy" alt="">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    <!-- Feature Box End -->
 
 
 

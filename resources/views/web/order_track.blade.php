@@ -62,7 +62,7 @@
                             </div>
                             <div class="col-md-6">
                                 <h5 class="font-weight-bold">Delivery Information</h5>
-                                <p><strong>Region:</strong> {{ $order->region }}</p>
+                                <p><strong>country:</strong> {{ $order->country }}</p>
                                 <p><strong>Address:</strong> {{ $order->address }}</p>
                             </div>
                         </div>

@@ -59,7 +59,9 @@
         <hr>
 
         <h4>Delivery Information</h4>
-        <p><strong>Region:</strong> {{ $order->region }}</p>
+        <p><strong>country:</strong> {{ $order->country }}</p>
+        <p><strong>city:</strong> {{ $order->city }}</p>
+        <p><strong>zip code:</strong> {{ $order->city_zip_code }}</p>
         <p><strong>Address:</strong> {{ $order->address }}</p>
         
         <hr>
@@ -123,7 +125,7 @@
                                     $finalPrice = max(0, $ProductPrice - ($ProductPrice * ($DiscountAmount / 100)));
                                 }
                             @endphp
-                            {{ number_format($finalPrice, 1) }} Ks
+                            {{ number_format($finalPrice, 1) }} $
                         </td>
                         <td>{{ $detail->qty }}</td>
                     </tr>

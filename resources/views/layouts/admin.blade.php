@@ -82,338 +82,282 @@
             <div class="side-nav">
                 <div class="side-nav-inner">
                     @if(Auth::user()->role == 1)
-                    <ul class="side-nav-menu scrollable">
-                        <li class="nav-item dropdown open">
-                            <a href="{{route('admin.dashboard')}}">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-dashboard"></i>
-                                </span>
-                                <span class="title">Dashboard</span>
+                  <ul class="side-nav-menu scrollable">
+    <li class="nav-item dropdown open">
+        <a href="{{route('admin.dashboard')}}">
+            <span class="icon-holder">
+                <i class="anticon anticon-dashboard"></i>
+            </span>
+            <span class="title">Dashboard</span>
+        </a>
+    </li>
 
-                            </a>
+    <li class="nav-item dropdown open">
+        <a href="/">
+            <span class="icon-holder">
+                <i class="anticon anticon-global"></i>
+            </span>
+            <span class="title">Visit Website</span>
+        </a>
+    </li>
 
-                        </li>
+    <li class="nav-item dropdown open">
+        <a href="/admin/sales">
+            <span class="icon-holder">
+                <i class="anticon anticon-line-chart"></i>
+            </span>
+            <span class="title">Sale Report</span>
+        </a>
+    </li>
 
-                        <li class="nav-item dropdown open">
-                            <a href="/">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Visit Webiste</span>
+    <li class="nav-item dropdown open">
+        <a href="/admin/orders">
+            <span class="icon-holder">
+                <i class="anticon anticon-shopping-cart"></i>
+            </span>
+            <span class="title">Order</span>
+        </a>
+    </li>
 
-                            </a>
+    <li class="nav-item dropdown open">
+        <a href="/admin/product_categories">
+            <span class="icon-holder">
+                <i class="anticon anticon-tags"></i>
+            </span>
+            <span class="title">Category</span>
+        </a>
+    </li>
 
-                        </li>
+    <li class="nav-item dropdown open">
+        <a href="/admin/brand">
+            <span class="icon-holder">
+                <i class="anticon anticon-appstore"></i>
+            </span>
+            <span class="title">Brand</span>
+        </a>
+    </li>
 
-                        <li class="nav-item dropdown open">
-                            <a href="/admin/sales">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Sale Report</span>
+    <li class="nav-item dropdown">
+        <a class="dropdown-toggle" href="javascript:void(0);">
+            <span class="icon-holder">
+                <i class="anticon anticon-shop"></i>
+            </span>
+            <span class="title">Product</span>
+            <span class="arrow">
+                <i class="arrow-icon"></i>
+            </span>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <a href="{{route('admin.products.create')}}">Single Product Create</a>
+            </li>
+            <li>
+                <a href="{{route('admin.products.create.varaint')}}">Variant Product Create</a>
+            </li>
+            <li>
+                <a href="{{route('admin.products.index')}}">View</a>
+            </li>
+        </ul>
+    </li>
 
-                            </a>
+    <li class="nav-item dropdown open">
+        <a href="/admin/supply">
+            <span class="icon-holder">
+                <i class="anticon anticon-box-plot"></i>
+            </span>
+            <span class="title">Supply Log</span>
+        </a>
+    </li>
 
-                        </li>
+    <li class="nav-item dropdown open">
+        <a href="/admin/cupon">
+            <span class="icon-holder">
+                <i class="anticon anticon-gift"></i>
+            </span>
+            <span class="title">Coupon</span>
+        </a>
+    </li>
 
-                        <li class="nav-item dropdown open">
-                            <a href="/admin/orders">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Order</span>
+    <li class="nav-item dropdown">
+        <a class="dropdown-toggle" href="javascript:void(0);">
+            <span class="icon-holder">
+                <i class="anticon anticon-user"></i>
+            </span>
+            <span class="title">Account</span>
+            <span class="arrow">
+                <i class="arrow-icon"></i>
+            </span>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <a href="/admin/admins">Admin</a>
+            </li>
+            <li>
+                <a href="/admin/customers">User</a>
+            </li>
+        </ul>
+    </li>
 
-                            </a>
+    <li class="nav-item dropdown open">
+        <a href="/admin/general_settings">
+            <span class="icon-holder">
+                <i class="anticon anticon-setting"></i>
+            </span>
+            <span class="title">Setting</span>
+        </a>
+    </li>
 
-                        </li>
+    <li class="nav-item dropdown open">
+        <a href="/admin/faq">
+            <span class="icon-holder">
+                <i class="anticon anticon-question-circle"></i>
+            </span>
+            <span class="title">FAQ</span>
+        </a>
+    </li>
 
-                        <li class="nav-item dropdown open">
-                            <a href="/admin/product_categories">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Categroy</span>
+    <li class="nav-item dropdown open">
+        <a href="/admin/feedback">
+            <span class="icon-holder">
+                <i class="anticon anticon-message"></i>
+            </span>
+            <span class="title">Customer Feedback</span>
+        </a>
+    </li>
 
-                            </a>
+    <li class="nav-item dropdown open">
+    <a href="/admin/currency">
+        <span class="icon-holder">
+            <i class="anticon anticon-dollar"></i> 
+        </span>
+        <span class="title">Currency Setting</span>
+    </a>
+</li> 
 
-                        </li>
+<li class="nav-item dropdown open">
+    <a href="/admin/delivery">
+        <span class="icon-holder">
+            <i class="anticon anticon-car"></i> 
+        </span>
+        <span class="title">Delivery Setting</span>
+    </a>
+</li>
 
-                        <!-- <li class="nav-item dropdown open">
-                            <a href="/admin/sub_category ">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">SubCategroy</span>
+    <!-- <li class="nav-item dropdown open">
+        <a href="/admin/payment_method">
+            <span class="icon-holder">
+                <i class="anticon anticon-credit-card"></i>
+            </span>
+            <span class="title">Payment Method</span>
+        </a>
+    </li> -->
 
-                            </a>
+    <li class="nav-item dropdown open">
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <span class="icon-holder">
+                <i class="anticon anticon-logout"></i>
+            </span>
+            <span class="title">Logout</span>
+        </a>
+    </li>
+</ul>
 
-                        </li> -->
-
-                        <li class="nav-item dropdown open">
-                            <a href="/admin/brand ">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Brand</span>
-
-                            </a>
-
-                        </li>
-
-                        <!-- <li class="nav-item dropdown open">
-                            <a href="/admin/goal ">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Goal</span>
-
-                            </a>
-
-                        </li> -->
-
-                        <li class="nav-item dropdown">
-                            <a class="dropdown-toggle" href="javascript:void(0);">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Product</span>
-                                <span class="arrow">
-                                    <i class="arrow-icon"></i>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="{{route('admin.products.create')}}">Single Product Create</a>
-                                </li>
-                                <li>
-                                    <a href="{{route('admin.products.create.varaint')}}">Variant Product Create</a>
-                                </li>
-                                <li>
-                                    <a href="{{route('admin.products.index')}}">View</a>
-                                </li>
-
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown open">
-                            <a href="/admin/supply ">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Supply Log</span>
-
-                            </a>
-
-                        </li>
-                        <li class="nav-item dropdown open">
-                            <a href="/admin/cupon ">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Cupon</span>
-
-                            </a>
-
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="dropdown-toggle" href="javascript:void(0);">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Account
-                                </span>
-                                <span class="arrow">
-                                    <i class="arrow-icon"></i>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="/admin/admins">Admin</a>
-                                </li>
-                                <li>
-                                    <a href="/admin/customers">User</a>
-                                </li>
-
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown open">
-                            <a href="/admin/general_settings">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Setting</span>
-
-                            </a>
-
-                        </li>
-                        <li class="nav-item dropdown open">
-                            <a href="/admin/faq">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">FAQ</span>
-
-                            </a>
-
-                        </li>
-                        <li class="nav-item dropdown open">
-                            <a href="/admin/feedback">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Customer Feedback</span>
-
-                            </a>
-
-                        </li>
-                        <li class="nav-item dropdown open">
-                            <a href="/admin/payment_method">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Payment Method</span>
-
-                            </a>
-
-                        </li>
-                        <li class="nav-item dropdown open">
-                            <a href="/admin/update">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Update</span>
-
-                            </a>
-
-                        </li>
-                        <li class="nav-item dropdown open">
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                            <a href="#"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-logout"></i>
-                                </span>
-                                <span class="title">Logout</span>
-                            </a>
-                        </li>
-
-                    </ul>
                     @endif
                     @if(Auth::user()->role == 3)
-                    <ul class="side-nav-menu scrollable">
-                        <li class="nav-item dropdown open">
-                            <a href="{{route('admin.dashboard')}}">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-dashboard"></i>
-                                </span>
-                                <span class="title">Dashboard</span>
+                  <ul class="side-nav-menu scrollable">
+    <li class="nav-item dropdown open">
+        <a href="{{route('admin.dashboard')}}">
+            <span class="icon-holder">
+                <i class="anticon anticon-dashboard"></i>
+            </span>
+            <span class="title">Dashboard</span>
+        </a>
+    </li>
 
-                            </a>
+    <li class="nav-item dropdown open">
+        <a href="/">
+            <span class="icon-holder">
+                <i class="anticon anticon-home"></i>
+            </span>
+            <span class="title">Visit Website</span>
+        </a>
+    </li>
 
-                        </li>
+    <li class="nav-item dropdown open">
+        <a href="/admin/sales">
+            <span class="icon-holder">
+                <i class="anticon anticon-line-chart"></i>
+            </span>
+            <span class="title">Sale Report</span>
+        </a>
+    </li>
 
-                        <li class="nav-item dropdown open">
-                            <a href="/">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Visit Webiste</span>
+    <li class="nav-item dropdown open">
+        <a href="/admin/orders">
+            <span class="icon-holder">
+                <i class="anticon anticon-shopping-cart"></i>
+            </span>
+            <span class="title">Order</span>
+        </a>
+    </li>
 
-                            </a>
+    <li class="nav-item dropdown">
+        <a class="dropdown-toggle" href="javascript:void(0);">
+            <span class="icon-holder">
+                <i class="anticon anticon-shopping"></i>
+            </span>
+            <span class="title">Product</span>
+            <span class="arrow">
+                <i class="arrow-icon"></i>
+            </span>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <a href="{{route('admin.products.create')}}">Single Product Create</a>
+            </li>
+            <li>
+                <a href="{{route('admin.products.create.varaint')}}">Variant Product Create</a>
+            </li>
+            <li>
+                <a href="{{route('admin.products.index')}}">View</a>
+            </li>
+        </ul>
+    </li>
 
-                        </li>
+    <li class="nav-item dropdown open">
+        <a href="/admin/supply">
+            <span class="icon-holder">
+                <i class="anticon anticon-box-plot"></i>
+            </span>
+            <span class="title">Supply</span>
+        </a>
+    </li>
 
-                        <li class="nav-item dropdown open">
-                            <a href="/admin/sales">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Sale Report</span>
+    <li class="nav-item dropdown open">
+        <a href="/admin/feedback">
+            <span class="icon-holder">
+                <i class="anticon anticon-message"></i>
+            </span>
+            <span class="title">Customer Feedback</span>
+        </a>
+    </li>
 
-                            </a>
+    <li class="nav-item dropdown open">
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <span class="icon-holder">
+                <i class="anticon anticon-logout"></i>
+            </span>
+            <span class="title">Logout</span>
+        </a>
+    </li>
+</ul>
 
-                        </li>
-
-                        <li class="nav-item dropdown open">
-                            <a href="/admin/orders">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Order</span>
-
-                            </a>
-
-                        </li>
-
-
-
-
-
-
-
-                        <li class="nav-item dropdown">
-                            <a class="dropdown-toggle" href="javascript:void(0);">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Product</span>
-                                <span class="arrow">
-                                    <i class="arrow-icon"></i>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="{{route('admin.products.create')}}">Single Product Create</a>
-                                </li>
-                                <li>
-                                    <a href="{{route('admin.products.create.varaint')}}">Variant Product Create</a>
-                                </li>
-                                <li>
-                                    <a href="{{route('admin.products.index')}}">View</a>
-                                </li>
-
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown open">
-                            <a href="/admin/supply ">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Supply</span>
-
-                            </a>
-
-                        </li>
-
-
-
-                        <li class="nav-item dropdown open">
-                            <a href="/admin/feedback">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-appstore"></i>
-                                </span>
-                                <span class="title">Customer Feedback</span>
-
-                            </a>
-
-                        </li>
-
-
-                        <li class="nav-item dropdown open">
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                            <a href="#"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-logout"></i>
-                                </span>
-                                <span class="title">Logout</span>
-                            </a>
-                        </li>
-
-                    </ul>
                     @endif
                 </div>
             </div>

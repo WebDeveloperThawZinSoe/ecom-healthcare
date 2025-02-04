@@ -136,7 +136,7 @@
 
                     </div>
                     <!-- Discount Type and Amount Fields -->
-                    <div class="form-group">
+                    <div class="form-group" style="display:none !important;">
                         <label for="pre_order">Pre Order</label>
                         <select id="pre_order" name="pre_order" class="form-control">
                             <option value="0" selected>No</option>
@@ -158,11 +158,12 @@
                             placeholder="Enter discount amount">
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" style="display:none !important;">
                         <label for="status">Status (<span style="color:red"> * </span>)</label>
                         <select name="status" class="form-control" required>
+                            <option value="0" selected>Inactive</option>
                             <option value="1">Active</option>
-                            <option value="0">Inactive</option>
+                          
                         </select>
                     </div>
 

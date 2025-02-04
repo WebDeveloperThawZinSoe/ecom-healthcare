@@ -30,7 +30,7 @@
                 </div>
                 <div class="col-md-6">
                     <h4>Delivery Information </h4>
-                    <p><strong>Region:</strong> {{ $order->region }}</p>
+                    <p><strong>country:</strong> {{ $order->country }}</p>
                     <p><strong>Address:</strong> {{ $order->address }}</p>
                 </div>
             </div>
@@ -38,7 +38,7 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <h4>Payment Information </h4>
-                    <p><strong>Total Price:</strong> {{ $order->total_price }} Ks</p>
+                    <p><strong>Total Price:</strong> {{ $order->total_price }} $</p>
                     <p><strong>Payment Method:</strong>
                         @if($order->payment_method == 0)
                         {{ 'Cash On Delivery' }}
@@ -107,7 +107,7 @@
                             $finalPrice = max(0, $ProductPrice - ($ProductPrice * ($DiscountAmount / 100))); 
                             }
 
-                            echo number_format($finalPrice, 2) . " Ks";
+                            echo number_format($finalPrice, 2) . " $";
                             ?>
 
 
@@ -116,7 +116,7 @@
                                 <?php 
                                 $qty = $detail->qty;
                                 $finalPrice = $finalPrice *  $qty;
-                                echo number_format($finalPrice, 2) . " Ks" ; 
+                                echo number_format($finalPrice, 2) . " $" ; 
                             ?>
                             </td>
                         </tr>
