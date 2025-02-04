@@ -513,7 +513,7 @@
 
 
                         @php
-                        $cards = auth()->check()
+                        $cards = auth()->check() 
                         ? App\Models\Card::where('user_id', auth()->id())->with('product_variant')->count()
                         : App\Models\Card::where('session_id',
                         session()->getId())->with('product_variant')->count();
