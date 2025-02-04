@@ -354,6 +354,7 @@
                 <div class="col-xl-4 side-bar">
                     <h4 class="title m-b15">Your Order</h4>
                     <div class="order-detail sticky-top">
+                        
                     @php
                                             $currencyCode = session('currency', 'USD');
                                             $currency = App\Models\Currency::where('code', $currencyCode)->first();
@@ -367,6 +368,21 @@
                         : App\Models\Card::where('session_id', session()->getId())->with('product_variant')->get();
                         $totalPrice = 0; // Initialize total price
                         @endphp
+
+                        <div class="icon-bx-wraper style-4 m-b30">
+                            <div class="icon-content">
+                                <h6 class="dz-title">Delivery Fee </h6>
+                                <p>
+                                    @php 
+
+                                        $delivery = App\Models\Delivery::where("currency",$currencyCode)->first();
+                                        $deli_price = $delivery->deli_price;
+                                        $mini_price = $delivery->mini_price;
+                                    @endphp
+                                    Delivery Fee is {{$deli_price}} {{$currencySymbol}} for orders below {{$mini_price}} {{$currencySymbol}} , <b> over {{$mini_price}} {{$currencySymbol}} is free </b>.
+                                </p>
+                            </div>
+                        </div>
 
                         @foreach($cards as $card)
                         @php
@@ -387,7 +403,7 @@
                         $subtotal = $finalPrice * $card->qty;
                         $totalPrice += $subtotal; // Add to total price
                         @endphp
-
+                      
                         <div class="cart-item style-1">
                             <div class="dz-media">
                                 <!-- Product Image -->
@@ -415,48 +431,78 @@
                         <table>
                             <tbody>
 
-                                @php
-                                $cupon_code = $card ? $card->coupon_code : null;
-                                $original_price = $totalPrice;
-                                if($cupon_code != null){
-                                $cupon_code_info = App\Models\CuponCode::where("id",$cupon_code)->first();
-                                $cupon_code_type = $cupon_code_info->type;
-                                $cupon_code_amount = $cupon_code_info->amount;
-                                $original_price = $totalPrice;
-                                $after_discount_price = 0;
-                                if($cupon_code_type == 1){
-                                $after_discount_price = $original_price - $cupon_code_amount;
-                                }elseif($cupon_code_type == 2){
-                                $after_discount_price = $original_price - ($original_price * ($cupon_code_amount /
-                                100));
-                                }
-                                }
-
-                                @endphp
-
-                                @if($cupon_code == null)
-                                <tr class="total">
-                                    @php 
-                                    $totalPrice = $totalPrice * $exchangeRate;
-                                    @endphp
-                                    <td style="font-size:20px !important;">Total</td>
-                                    <td class="price"> {{ number_format($totalPrice, 2) }}  {{ $currencySymbol}}</td>
-
-                                </tr>
-                                @else
-                                <tr class="total">
-                                    <td style="font-size:20px !important;">Total</td>
-                                    @php 
-                                    $totalPrice = $totalPrice * $exchangeRate;
-                                    $after_discount_price = $after_discount_price * $exchangeRate;
-                                    @endphp
-                                    <td class="price"> <del>{{ number_format($totalPrice, 2) }}</del>  {{ $currencySymbol}}
-                                        <br>
-                                        {{ number_format($after_discount_price, 2) }}  {{ $currencySymbol}}
+                            <tr class="delivery">
+                                    <td>
+                                        <h6 class="mb-0">Delivery Fee</h6>
                                     </td>
 
+                                    <td class="price" style="text-align:right">
+                                        @php
+                                        $cupon_code = $card ? $card->coupon_code : null;
+                                        $original_price = $totalPrice;
+                                        $after_discount_price = $totalPrice; // Initialize with the total price
+
+                                        if ($cupon_code) {
+                                        $cupon_code_info = App\Models\CuponCode::find($cupon_code);
+                                        if ($cupon_code_info) {
+                                        $cupon_code_type = $cupon_code_info->type;
+                                        $cupon_code_amount = $cupon_code_info->amount;
+
+                                        if ($cupon_code_type == 1) {
+                                        $after_discount_price -= $cupon_code_amount;
+                                        } elseif ($cupon_code_type == 2) {
+                                        $after_discount_price -= ($after_discount_price * ($cupon_code_amount / 100));
+                                        }
+                                        }
+                                        }
+
+                                        // Apply exchange rate
+                                        $original_price *= $exchangeRate;
+                                        $after_discount_price *= $exchangeRate;
+
+                                        // Determine final order price (with or without coupon)
+                                        $order_price = $cupon_code ? $after_discount_price : $original_price;
+
+                                        // Fetch delivery settings
+                                        $delivery = App\Models\Delivery::where("currency", session("currency",
+                                        "USD"))->first();
+                                        $deliveryFee = 0;
+
+                                        if ($delivery) {
+                                        $deliveryFee = ($order_price < $delivery->mini_price) ? $delivery->deli_price :
+                                            0;
+                                            
+                                            }
+                                            @endphp
+
+                                            @if ($deliveryFee > 0)
+                                            {{ number_format($deliveryFee, 2) }} {{ $currencySymbol }}
+                                            @else
+                                            Delivery Fee is Free
+                                            @endif
+                                    </td>
                                 </tr>
-                                @endif
+
+                                <tr class="total">
+                                    <td>
+                                        <h6 class="mb-0">Total</h6>
+                                    </td>
+
+                                    @php
+                                    // Add delivery fee to total price
+                                    $finalTotal = $order_price + $deliveryFee;
+                                    @endphp
+
+                                    <td class="price">
+                                        @if ($cupon_code)
+                                        <del>{{ number_format($original_price, 2) }} {{ $currencySymbol }}</del>
+                                        <br>
+                                        {{ number_format($finalTotal, 2) }} {{ $currencySymbol }}
+                                        @else
+                                        {{ number_format($finalTotal, 2) }} {{ $currencySymbol }}
+                                        @endif
+                                    </td>
+                                </tr>
 
                                 @if($cupon_code != null)
                                 <p> Cupon Code : {{$cupon_code_info->cupon_code}}</p>

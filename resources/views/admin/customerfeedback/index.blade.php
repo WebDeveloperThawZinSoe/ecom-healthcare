@@ -26,7 +26,7 @@
             </div>
         @endif
 
-        <h4 class="card-title">Orders List</h4>
+        <h4 class="card-title">Customer Feed List</h4>
 
         <div class="m-t-25">
             <table id="data-table" class="table">
