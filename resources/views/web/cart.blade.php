@@ -85,11 +85,22 @@
                                         </a>
                                     </td>
                                     <td class="product-item-price">
+                                         @php
+                                            $currencyCode = session('currency', 'USD');
+                                            $currency = App\Models\Currency::where('code', $currencyCode)->first();
+                                            $currencySymbol = $currency->symbol ?? '$';
+                                            $exchangeRate = $currency->exchange_rate ?? 1;
+                                            $variantProductPrice = $variantProductPrice * $exchangeRate;
+                                            @endphp
                                         @if ($vDiscountType == 0)
-                                        {{ number_format($variantProductPrice, 2) }} $
+                                        {{ number_format($variantProductPrice, 2) }} {{$currencySymbol}}
                                         @else
+                                        @php 
+                                            $variantProductPriceOrg = $variantProductPriceOrg * $exchangeRate;
+                                            $finalPrice = $finalPrice * $exchangeRate;
+                                        @endphp
                                         <del>{{ number_format($variantProductPriceOrg, 2) }}</del>
-                                        {{ number_format($finalPrice, 2) }} $
+                                        {{ number_format($finalPrice, 2) }}  {{$currencySymbol}}
                                         @endif
                                     </td>
                                     <td class="product-item-quantity">
@@ -111,7 +122,10 @@
                                         </div>
                                     </td>
                                     <td class="product-item-totle d-none d-md-table-cell">
-                                        {{ number_format($subtotal, 2) }} $
+                                        @php 
+                                            $subtotal = $subtotal * $exchangeRate;
+                                        @endphp
+                                        {{ number_format($subtotal, 2) }}  {{$currencySymbol}}
                                     </td>
                                     <td class="product-item-close">
                                         <form action="/cart/remove/{{ $card->id }}" method="POST">
@@ -134,11 +148,11 @@
                     <h4 class="title mb15">Cart Total</h4>
                     <div class="cart-detail">
                         <div class="icon-bx-wraper style-4 m-b30">
-                            <div class="icon-bx">
+                            <!-- <div class="icon-bx">
                                 <img src="{{ asset('web/images/shop/shop-cart/icon-box/pic2.png') }}" alt="/">
-                            </div>
+                            </div> -->
                             <div class="icon-content">
-                                <h6 class="dz-title">Enjoy The Product</h6>
+                                <h6 class="dz-title">Delivery Fee </h6>
                                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting.</p>
                             </div>
                         </div>
@@ -212,28 +226,36 @@
                                     </td>
                                     @php 
                                     $cupon_code = $card ? $card->coupon_code : null;
-                                    $original_price = $totalPrice;
+                                    $original_price = $totalPrice ;
                                     if($cupon_code != null){
                                         $cupon_code_info = App\Models\CuponCode::where("id",$cupon_code)->first();
                                         $cupon_code_type = $cupon_code_info->type;
                                         $cupon_code_amount  = $cupon_code_info->amount;
-                                        $original_price = $totalPrice;
+                                        $original_price = $totalPrice ;
                                         $after_discount_price = 0;
                                         if($cupon_code_type == 1){
                                             $after_discount_price = $original_price - $cupon_code_amount;
+                                            $original_price = $original_price * $exchangeRate;
+                                            $after_discount_price = $after_discount_price * $exchangeRate;
                                         }elseif($cupon_code_type == 2){
                                             $after_discount_price = $original_price - ($original_price * ($cupon_code_amount / 100));
+                                            $original_price = $original_price * $exchangeRate;
+                                            $after_discount_price = $after_discount_price * $exchangeRate;
                                         }
                                     }
 
                                     @endphp
 
                                     @if($cupon_code ==  null)
-                                        <td class="price">{{ number_format($totalPrice, 2) }} $</td>
+                                        @php
+                                        $totalPrice = $totalPrice * $exchangeRate;
+                                        @endphp
+                                        <td class="price">{{ number_format($totalPrice, 2) }} {{$currencySymbol}}</td>
                                     @else 
-                                        <td class="price"><del>{{ number_format($original_price, 2) }}</del>$ 
+                                        <td class="price"><del>{{ number_format($original_price, 2) }}</del>{{$currencySymbol}} 
                                             <br>
-                                            {{ number_format($after_discount_price, 2) }} $
+
+                                            {{ number_format($after_discount_price, 2) }} {{$currencySymbol}}
                                         </td>
                                     @endif
                                    

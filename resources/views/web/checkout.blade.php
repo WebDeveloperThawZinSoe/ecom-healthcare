@@ -354,6 +354,13 @@
                 <div class="col-xl-4 side-bar">
                     <h4 class="title m-b15">Your Order</h4>
                     <div class="order-detail sticky-top">
+                    @php
+                                            $currencyCode = session('currency', 'USD');
+                                            $currency = App\Models\Currency::where('code', $currencyCode)->first();
+                                            $currencySymbol = $currency->symbol ?? '$';
+                                            $exchangeRate = $currency->exchange_rate ?? 1;
+                                         
+                                            @endphp
                         @php
                         $cards = auth()->check()
                         ? App\Models\Card::where('user_id', auth()->id())->with('product_variant')->get()
@@ -393,8 +400,10 @@
                                         {{ $card->product_variant->attribute_value }} )</a>
                                 </h5>
                                 <!-- Final Price (after discount) -->
-
-                                <p> &nbsp; QTY: {{ $card->qty }} | SubTotal : {{ number_format($subtotal, 2) }} $</p>
+                                @php 
+                                $subtotal = $subtotal * $exchangeRate;
+                                @endphp
+                                <p> &nbsp; QTY: {{ $card->qty }} | SubTotal : {{ number_format($subtotal, 2) }} {{ $currencySymbol}}</p>
 
                             </div>
                         </div>
@@ -427,16 +436,23 @@
 
                                 @if($cupon_code == null)
                                 <tr class="total">
+                                    @php 
+                                    $totalPrice = $totalPrice * $exchangeRate;
+                                    @endphp
                                     <td style="font-size:20px !important;">Total</td>
-                                    <td class="price"> {{ number_format($totalPrice, 2) }} $</td>
+                                    <td class="price"> {{ number_format($totalPrice, 2) }}  {{ $currencySymbol}}</td>
 
                                 </tr>
                                 @else
                                 <tr class="total">
                                     <td style="font-size:20px !important;">Total</td>
-                                    <td class="price"> <del>{{ number_format($totalPrice, 2) }}</del> $
+                                    @php 
+                                    $totalPrice = $totalPrice * $exchangeRate;
+                                    $after_discount_price = $after_discount_price * $exchangeRate;
+                                    @endphp
+                                    <td class="price"> <del>{{ number_format($totalPrice, 2) }}</del>  {{ $currencySymbol}}
                                         <br>
-                                        {{ number_format($after_discount_price, 2) }} $
+                                        {{ number_format($after_discount_price, 2) }}  {{ $currencySymbol}}
                                     </td>
 
                                 </tr>

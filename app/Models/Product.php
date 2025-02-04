@@ -81,4 +81,14 @@ class Product extends Model
         return $value ? json_decode($value, true) : [];
     }
 
+    public function getConvertedPrice($currencyCode)
+    {
+        $currency = Currency::where('code', $currencyCode)->first();
+        if (!$currency) {
+            return $this->price; // Return base price if currency not found
+        }
+
+        return round($this->price * $currency->exchange_rate, 2); // Convert price
+    }
+
 }

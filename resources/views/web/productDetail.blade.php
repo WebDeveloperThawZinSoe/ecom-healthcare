@@ -122,35 +122,52 @@
                             <div class="meta-content m-b20 d-flex align-items-end">
                                 <div class="me-3">
 
-                                    
+
 
                                     <label class="form-label">Price</label>
-                                   
+
+                                    @php
+                                    use App\Models\Currency;
+
+                                    // Get selected currency from session (default to 'USD')
+                                    $currencyCode = session('currency', 'USD');
+
+                                    // Retrieve currency details from the database
+                                    $currency = Currency::where('code', $currencyCode)->first();
+                                    $currencySymbol = $currency->symbol ?? '$';
+                                    $exchangeRate = $currency->exchange_rate ?? 1;
+                                    @endphp
+
                                     <span class="price-num" id="product-price">
                                         @php
-                                            $currencySymbol = "$";
+                                        if ($detail_product->product_type == 1) {
+                                        $price = $detail_product->price * $exchangeRate; // Convert price
 
-                                            if ($detail_product->product_type == 1) {
-                                                $price = $detail_product->price;
-                                               
-                                                if ($detail_product->discount_type == 1) {
-                                                    $discountPrice = $price - $detail_product->discount_amount;
-                                                    $priceDisplay = "<del>$price</del> $discountPrice";
-                                                } elseif ($detail_product->discount_type == 2) {
-                                                    $discountPrice = $price - ($price * ($detail_product->discount_amount / 100));
-                                                    $priceDisplay = "<del>$price</del> $discountPrice";
-                                                } else {
-                                                    $priceDisplay = $price;
-                                                }
+                                        if ($detail_product->discount_type == 1) {
+                                        $discountPrice = ($detail_product->price - $detail_product->discount_amount) *
+                                        $exchangeRate;
+                                        $priceDisplay = "<del>{$currencySymbol} " . number_format($price, 2) . "</del>
+                                        {$currencySymbol} " . number_format($discountPrice, 2);
+                                        } elseif ($detail_product->discount_type == 2) {
+                                        $discountPrice = ($detail_product->price - ($detail_product->price *
+                                        ($detail_product->discount_amount / 100))) * $exchangeRate;
+                                        $priceDisplay = "<del>{$currencySymbol} " . number_format($price, 2) . "</del>
+                                        {$currencySymbol} " . number_format($discountPrice, 2);
+                                        } else {
+                                        $priceDisplay = "{$currencySymbol} " . number_format($price, 2);
+                                        }
 
-                                                echo $priceDisplay . " " . $currencySymbol;
-                                            } elseif ($detail_product->product_type == 2) {
-                                                $minPrice = $detail_product->variants->min('price');
-                                                $maxPrice = $detail_product->variants->max('price');
-                                                echo "$minPrice ~ $maxPrice $currencySymbol";
-                                            }
+                                        echo $priceDisplay;
+                                        } elseif ($detail_product->product_type == 2) {
+                                        $minPrice = $detail_product->variants->min('price') * $exchangeRate;
+                                        $maxPrice = $detail_product->variants->max('price') * $exchangeRate;
+                                        echo "{$currencySymbol} " . number_format($minPrice, 2) . " ~ {$currencySymbol}
+                                        " . number_format($maxPrice, 2);
+                                        }
                                         @endphp
                                     </span>
+
+
                                 </div>
                             </div>
 
@@ -163,40 +180,41 @@
                                     $groupedVariants = $detail_product->variants->groupBy('attribute_name');
                                     @endphp
                                     @foreach($groupedVariants as $attributeName => $variants)
-                                        <div class="variant-group">
-                                            <h5 class="variant-attribute-name">{{ $attributeName }}</h5>
-                                            @foreach($variants as $variant)
-                                                @if($variant->stock > 0 && $variant->status == 1)
-                                                    @php
-                                                        $variantProductPrice = $variant->price;
-                                                        $discountType = $variant->discount_type;
-                                                        $discountAmount = $variant->discount_amount;
+                                    <div class="variant-group">
+                                        <h5 class="variant-attribute-name">{{ $attributeName }}</h5>
+                                        @foreach($variants as $variant)
+                                        @if($variant->stock > 0 && $variant->status == 1)
+                                        @php
+                                        $variantProductPrice = $variant->price;
+                                        $discountType = $variant->discount_type;
+                                        $discountAmount = $variant->discount_amount;
 
-                                                        switch ($discountType) {
-                                                            case 1: // Fixed amount discount
-                                                                $variantProductPrice -= $discountAmount;
-                                                                $showPrice = "<del>{$variant->price}</del> $variantProductPrice";
-                                                                break;
-                                                            case 2: // Percentage discount
-                                                                $variantProductPrice -= $variantProductPrice * ($discountAmount / 100);
-                                                                $showPrice = "<del>{$variant->price}</del> $variantProductPrice";
-                                                                break;
-                                                            default: // No discount
-                                                                $showPrice = $variantProductPrice;
-                                                                break;
-                                                        }
-                                                    @endphp
+                                        // Calculate the price after discount
+                                        switch ($discountType) {
+                                        case 1: // Fixed amount discount
+                                        $variantProductPrice -= $discountAmount;
+                                        break;
+                                        case 2: // Percentage discount
+                                        $variantProductPrice -= $variantProductPrice * ($discountAmount / 100);
+                                        break;
+                                        default: // No discount
+                                        break;
+                                        }
+                                        // Ensure that the price is numeric for JavaScript
+                                        $showPrice = $variantProductPrice;
+                                        @endphp
 
-                                                    <label class="btn btn-outline-secondary variant-option"
-                                                        data-price="{{ $variantProductPrice }}"
-                                                        data-image="{{ asset($variant->image) }}"
-                                                        data-showPrice="{{ $showPrice }}">
-                                                        <input type="radio" name="product_variant" value="{{ $variant->id }}" class="d-none">
-                                                        {{ $variant->attribute_value ?? 'Default' }}
-                                                    </label>
-                                                @endif
-                                            @endforeach
-                                        </div>
+                                        <label class="btn btn-outline-secondary variant-option"
+                                            data-price="{{ $variantProductPrice }}"
+                                            data-image="{{ asset($variant->image) }}" data-showPrice="{{ $showPrice }}">
+                                            <input type="radio" name="product_variant" value="{{ $variant->id }}"
+                                                class="d-none">
+                                            {{ $variant->attribute_value ?? 'Default' }}
+                                        </label>
+                                        @endif
+                                        @endforeach
+                                    </div>
+
                                     @endforeach
 
                                 </div>
@@ -236,7 +254,9 @@
         </div>
     </section>
 
-
+    @php
+    $exchangeRate = isset($exchangeRate) && is_numeric($exchangeRate) ? $exchangeRate : 1;
+    @endphp
     <script>
     // JavaScript function to change the main image and update Lightbox link
     function changeMainImage(imageUrl) {
@@ -245,35 +265,76 @@
     }
 
     // Variant selection event handler
-    document.querySelectorAll('.variant-option').forEach(button => {
-        button.addEventListener('click', function() {
-            button.querySelector('input').checked = true;
-            document.querySelectorAll('.variant-option').forEach(btn => btn.classList
-                .remove('active'));
-            button.classList.add('active');
-           
-            // Update product price based on selected variant
-            const variantPrice = button.getAttribute('data-price');
-            const show_price = button.getAttribute('data-showPrice');
-           
-         
-            /* Check The Discount and Calcuate the price */
-         
-            let currency = "$";
-          
-            document.getElementById('product-price').innerHTML = show_price + currency;
+    // document.querySelectorAll('.variant-option').forEach(button => {
+    //     button.addEventListener('click', function() {
+    //         button.querySelector('input').checked = true;
+    //         document.querySelectorAll('.variant-option').forEach(btn => btn.classList
+    //             .remove('active'));
+    //         button.classList.add('active');
 
-            // Set the selected variant ID in the hidden form field
-            document.getElementById('variant_id').value = button.querySelector('input')
-                .value;
+    //         // Update product price based on selected variant
+    //         const variantPrice = button.getAttribute('data-price');
+    //         const show_price_org = Number(button.getAttribute('data-showPrice'));
+    //         console.log("Parsed Original Price:", show_price_org);
+    //         // Ensure exchangeRate is properly converted
+    //         let exchangeRate = {
+    //             {
+    //                 is_numeric($exchangeRate) ? $exchangeRate : 1
+    //             }
+    //         };
+    //         console.log("Parsed Exchange Rate:", exchangeRate);
 
-            // Update main image based on selected variant's image
-            const variantImage = button.getAttribute('data-image');
-            if (variantImage) {
-                changeMainImage(variantImage);
-            }
-        });
+    //         let show_price = show_price_org * exchangeRate;
+
+    //         let currencySymbol = "{{ $currencySymbol }}";
+    //         document.getElementById('product-price').innerHTML = show_price.toFixed(2) + " " +
+    //             currencySymbol;
+
+
+    //         // Set the selected variant ID in the hidden form field
+    //         document.getElementById('variant_id').value = button.querySelector('input')
+    //             .value;
+
+    //         // Update main image based on selected variant's image
+    //         const variantImage = button.getAttribute('data-image');
+    //         if (variantImage) {
+    //             changeMainImage(variantImage);
+    //         }
+    //     });
+    // });
+
+    // Variant selection event handler
+document.querySelectorAll('.variant-option').forEach(button => {
+    button.addEventListener('click', function() {
+        button.querySelector('input').checked = true;
+        document.querySelectorAll('.variant-option').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        // Get the numeric value for show_price_org
+        const show_price_org = Number(button.getAttribute('data-showPrice')); // This should now be numeric
+        console.log("Parsed Original Price:", show_price_org);
+
+        // Ensure exchangeRate is properly converted
+        let exchangeRate = {{ is_numeric($exchangeRate) ? $exchangeRate : 1 }};
+        console.log("Parsed Exchange Rate:", exchangeRate);
+
+        let show_price = show_price_org * exchangeRate;
+
+        let currencySymbol = "{{ $currencySymbol }}";
+        document.getElementById('product-price').innerHTML = show_price.toFixed(2) + " " + currencySymbol;
+
+        // Set the selected variant ID in the hidden form field
+        document.getElementById('variant_id').value = button.querySelector('input').value;
+
+        // Update main image based on selected variant's image
+        const variantImage = button.getAttribute('data-image');
+        if (variantImage) {
+            changeMainImage(variantImage);
+        }
     });
+});
+
+
 
 
     // Handle quantity increase and decrease
@@ -405,44 +466,44 @@
                                     </div>
                                     <div class="dz-content">
                                         <h5 class="title">{{ $product->name }}</h5>
-
                                         <h6 class="price" style="color:black !important;">
-                                            @if($product->product_type == 1)
-                                            @if($product->discount_type == 0)
-                                            {{$product->price}} 
-                                            $
-                                            @elseif($product->discount_type == 1)
                                             @php
-                                            $discount_price = $product->price - $product->discount_amount;
-                                            @endphp
-                                            <del>{{$product->price}} </del>
-                                            {{$discount_price}} 
-                                            $
-                                            @elseif($product->discount_type == 2)
-                                            @php
-                                            $discount_price = $product->price - ( $product->price * (
-                                            $product->discount_amount / 100 ));
-                                            @endphp
-                                            <del>{{$product->price}} </del>
-                                            {{$discount_price}} 
-                                            $
-                                            @endif
-                                            @elseif($product->product_type == 2)
-                                            @php
-                                            $minPrice = $product->variants->min('price');
-                                            $maxPrice = $product->variants->max('price');
-                                            echo $minPrice . " ~ " . $maxPrice ;
-                                            @endphp
-                                            $
-                                            @endif
+                                            if ($detail_product->product_type == 1) {
+                                            $price = $detail_product->price * $exchangeRate; // Convert price
 
+                                            if ($detail_product->discount_type == 1) {
+                                            $discountPrice = ($detail_product->price - $detail_product->discount_amount)
+                                            *
+                                            $exchangeRate;
+                                            $priceDisplay = "<del>{$currencySymbol} " . number_format($price, 2) .
+                                                "</del>
+                                            {$currencySymbol} " . number_format($discountPrice, 2);
+                                            } elseif ($detail_product->discount_type == 2) {
+                                            $discountPrice = ($detail_product->price - ($detail_product->price *
+                                            ($detail_product->discount_amount / 100))) * $exchangeRate;
+                                            $priceDisplay = "<del>{$currencySymbol} " . number_format($price, 2) .
+                                                "</del>
+                                            {$currencySymbol} " . number_format($discountPrice, 2);
+                                            } else {
+                                            $priceDisplay = "{$currencySymbol} " . number_format($price, 2);
+                                            }
+
+                                            echo $priceDisplay;
+                                            } elseif ($detail_product->product_type == 2) {
+                                            $minPrice = $detail_product->variants->min('price') * $exchangeRate;
+                                            $maxPrice = $detail_product->variants->max('price') * $exchangeRate;
+                                            echo "{$currencySymbol} " . number_format($minPrice, 2) . " ~
+                                            {$currencySymbol}
+                                            " . number_format($maxPrice, 2);
+                                            }
+                                            @endphp
                                         </h6>
                                     </div>
                                     @if($product->discount_type != 0)
                                     <div class="product-tag">
                                         <span class="badge badge-secondary">Sale |
                                             @if($product->discount_type == 1)
-                                            {{$product->discount_amount}} 
+                                            {{$product->discount_amount}}
                                             $ OFF
                                             @elseif($product->discount_type == 2)
                                             {{$product->discount_amount}} % OFF

@@ -38,6 +38,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UserOrderController;
 use App\Http\Controllers\VIPRequestController;
+use App\Http\Controllers\CurrencyChangerController;
 use App\Http\Controllers\Auth\SocialAuthController;
 
 
@@ -200,3 +201,4 @@ Route::post('/search', [PageController::class, 'search'])->name('search');
 Route::get("/pre_order",[PageController::class,"preOrder"]);
 Route::get('auth/{provider}', [SocialAuthController::class, 'redirectToProvider'])->name('auth.provider');
 Route::get('auth/{provider}/callback', [SocialAuthController::class, 'handleProviderCallback'])->name('auth.callback');
+Route::get('/change-currency/{currencyCode}', [CurrencyChangerController::class, 'changeCurrency'])->name('change.currency');
