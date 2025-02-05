@@ -1,3 +1,4 @@
+
 @extends('web.master')
 
 @section('body')
@@ -62,7 +63,8 @@
                             </div>
                             <div class="col-md-6">
                                 <h5 class="font-weight-bold">Delivery Information</h5>
-                                <p><strong>country:</strong> {{ $order->country }}</p>
+                                <p><strong>Country:</strong> {{ $order->country }}</p>
+                                 <p><strong>City:</strong> {{ $order->city }}</p>
                                 <p><strong>Address:</strong> {{ $order->address }}</p>
                             </div>
                         </div>
@@ -70,15 +72,27 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <h5 class="font-weight-bold">Payment Information</h5>
-                                <p><strong>Total Price:</strong> {{ $order->total_price }} $</p>
-                                <p><strong>Payment Method:</strong>
-                                    @if($order->payment_method == 0)
-                                    {{ 'Cash On Delivery' }}
-                                    @else
-                                    {{ optional($order->paymentMethod)->method_name }}
-                                    @endif
-                                </p>
-                                <p><strong>Payment Account:</strong> {{ $order->payment_account_name }}</p>
+                             <p><strong>Price:</strong> {{ $order->payment_currency_price }} {{ $order->payment_currency }}</p>
+                    <p><strong>Delivery Fee:</strong> {{ $order->delivery_price }} {{ $order->payment_currency }}</p>
+                    <p><strong>Total:</strong> {{ $order->payment_currency_price + $order->delivery_price }}
+                        {{ $order->payment_currency }}</p>
+                                  <p><strong>Billing Method:</strong>
+                        @if($order->payment_method == 0)
+                        Cash On Delivery
+                        @elseif($order->payment_method == "stripe")
+                        Stripe Payment
+                        @else
+                        {{ optional($order->paymentMethod)->method_name }}
+                        @endif
+                    </p>
+                    <p>
+                        <strong>Payment Status:</strong>
+                        @if($order->payment_status == 0)
+                        Pending
+                        @else
+                        {{$order->payment_status}}
+                        @endif
+                    </p>
                             </div>
                             <div class="col-md-6">
                                 @if($order->payment_slip)
@@ -133,14 +147,16 @@
                                             } elseif ($DiscountType == 2) { 
                                                 $finalPrice = max(0, $ProductPrice - ($ProductPrice * ($DiscountAmount / 100))); 
                                             }
-                                            echo number_format($finalPrice, 2) . " $";
+                                            $finalPrice = $finalPrice * $order->payment_currency_rate;
+                                            echo number_format($finalPrice, 2) . " $order->payment_currency";
                                             ?>
                                         </td>
                                         <td>
                                             <?php 
                                             $qty = $detail->qty;
                                             $finalPrice = $finalPrice *  $qty;
-                                            echo number_format($finalPrice, 2) . " $"; 
+                                          
+                                            echo number_format($finalPrice, 2) . "$order->payment_currency"; 
                                             ?>
                                         </td>
                                     </tr>

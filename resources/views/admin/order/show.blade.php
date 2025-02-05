@@ -142,7 +142,7 @@
                             @php
                             $exchangeRate = $order->payment_currency_rate;
                             @endphp
-                            ( {{ $finalPrice *  $exchangeRate }} )
+                            ( {{ $finalPrice *  $exchangeRate }} {{ $order->payment_currency }} )
                         </td>
                         <td>{{ $detail->qty }}</td>
                     </tr>
