@@ -5,7 +5,7 @@
     <div class="card">
         <div class="card-body">
             <br>
-            <h4 class="card-title mb-4">Order #{{ $order->order_number }} 
+            <h4 class="card-title mb-4">Order #{{ $order->order_number }}
                 @if($order->status == 1)
                 <span class="badge badge-warning">Pending</span>
                 @elseif($order->status == 2)
@@ -16,7 +16,7 @@
                 <span class="badge badge-warning">Payment Pending</span>
                 @endif
             </h4>
-            
+
             <button onclick="window.print()" class="btn btn-primary">Print</button>
             <br><br>
             <div class="row mb-3">
@@ -30,7 +30,8 @@
                 </div>
                 <div class="col-md-6">
                     <h4>Delivery Information </h4>
-                    <p><strong>country:</strong> {{ $order->country }}</p>
+                    <p><strong>Country:</strong> {{ $order->country }}</p>
+                    <p><strong>City:</strong> {{ $order->city }}</p>
                     <p><strong>Address:</strong> {{ $order->address }}</p>
                 </div>
             </div>
@@ -38,16 +39,28 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <h4>Payment Information </h4>
-                    <p><strong>Total Price:</strong> {{ $order->total_price }} $</p>
-                    <p><strong>Payment Method:</strong>
+                    <p><strong>Price:</strong> {{ $order->payment_currency_price }} {{ $order->payment_currency }}</p>
+                    <p><strong>Delivery Fee:</strong> {{ $order->delivery_price }} {{ $order->payment_currency }}</p>
+                    <p><strong>Total:</strong> {{ $order->payment_currency_price + $order->delivery_price }}
+                        {{ $order->payment_currency }}</p>
+                    <p><strong>Billing Method:</strong>
                         @if($order->payment_method == 0)
-                        {{ 'Cash On Delivery' }}
+                        Cash On Delivery
+                        @elseif($order->payment_method == "stripe")
+                        Stripe Payment
                         @else
                         {{ optional($order->paymentMethod)->method_name }}
                         @endif
-
                     </p>
-                    <p><strong>Payment Account : </strong> {{$order->payment_account_name}} </p>
+                    <p>
+                        <strong>Payment Status:</strong>
+                        @if($order->payment_status == 0)
+                        Pending
+                        @else
+                        {{$order->payment_status}}
+                        @endif
+                    </p>
+
                     <!-- <p><strong>Transaction id : </strong> {{$order->transaction_no}}</p> -->
                 </div>
                 <div class="col-md-6">
@@ -80,6 +93,10 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+
+                        $exchangeRate = $order->payment_currency_rate;
+                        @endphp
                         @foreach($order->orderDetails as $detail)
                         <tr>
                             <td>
@@ -96,7 +113,7 @@
                                 {{ $detail->productVaraints->attribute_value ?? "default" }}) </td>
                             <td>{{ $detail->qty }}</td>
                             <td>
-                           <?php
+                                <?php
                             $ProductPrice = $detail->productVaraints->price ?? 0;
                             $DiscountType = $detail->productVaraints->discount_type ?? 0;
                             $DiscountAmount = $detail->productVaraints->discount_amount ?? 0;
@@ -106,8 +123,8 @@
                             } elseif ($DiscountType == 2) { 
                             $finalPrice = max(0, $ProductPrice - ($ProductPrice * ($DiscountAmount / 100))); 
                             }
-
-                            echo number_format($finalPrice, 2) . " $";
+                            $finalPrice = $finalPrice * $exchangeRate;
+                            echo number_format($finalPrice, 2) . " $order->payment_currency";
                             ?>
 
 
@@ -116,7 +133,8 @@
                                 <?php 
                                 $qty = $detail->qty;
                                 $finalPrice = $finalPrice *  $qty;
-                                echo number_format($finalPrice, 2) . " $" ; 
+                              
+                                echo number_format($finalPrice, 2) . "$order->payment_currency" ; 
                             ?>
                             </td>
                         </tr>

@@ -154,6 +154,13 @@
                                 <h6 class="dz-title">Delivery Fee </h6>
                                 <p>
                                     @php
+                                        $currencyCode = session('currency', 'USD');
+                                        $currency = App\Models\Currency::where('code', $currencyCode)->first();
+
+                                        $currencySymbol = $currency->symbol ?? '$';
+                                        $exchangeRate = $currency->exchange_rate ?? 1;
+                                    @endphp
+                                    @php
 
                                     $delivery = App\Models\Delivery::where("currency",$currencyCode)->first();
                                     $deli_price = $delivery->deli_price;

@@ -23,6 +23,45 @@
         <p><strong>Customer:</strong> {{ $order->user->name ?? 'Guest' }}</p>
         <p><strong>Email:</strong> {{ $order->user->email ?? 'N/A' }}</p>
         <p><strong>Phone:</strong> {{ $order->user->phone ?? 'N/A' }}</p>
+       
+
+       
+        
+        <hr>
+        <h4>Order Information</h4>
+        <p><strong>Name :</strong> {{ $order->name }}</p>
+        <p><strong>Email :</strong> {{ $order->email }}</p>
+        <p><strong>Phone :</strong> {{ $order->phone }}</p>
+     
+        <hr>
+
+        <h4>Delivery Information</h4>
+        <p><strong>country:</strong> {{ $order->country }}</p>
+        <p><strong>city:</strong> {{ $order->city }}</p>
+        <p><strong>zip code:</strong> {{ $order->city_zip_code }}</p>
+        <p><strong>Address:</strong> {{ $order->address }}</p>
+        
+        <hr>
+
+        <h4>Billing Information</h4>
+        <p><strong>Billing Method:</strong> 
+            @if($order->payment_method == 0)
+                Cash On Delivery
+            @elseif($order->payment_method == "stripe")
+                Stripe Payment
+            @else
+                {{ optional($order->paymentMethod)->method_name }}
+            @endif
+        </p>
+        <p>
+            <strong>Payment Status:</strong>
+            @if($order->payment_status == 0)
+                Pending
+            @else
+                {{$order->payment_status}}
+            @endif
+        </p>
+
         <p><strong>Total Price:</strong> 
         
         @php 
@@ -54,37 +93,11 @@
         @endif
         </p>
 
-       
-        
-        <hr>
-
-        <h4>Delivery Information</h4>
-        <p><strong>country:</strong> {{ $order->country }}</p>
-        <p><strong>city:</strong> {{ $order->city }}</p>
-        <p><strong>zip code:</strong> {{ $order->city_zip_code }}</p>
-        <p><strong>Address:</strong> {{ $order->address }}</p>
-        
-        <hr>
-
-        <h4>Billing Information</h4>
-        <p><strong>Delivery Method:</strong> 
-            @if($order->payment_method == 0)
-                Cash On Delivery
-            @elseif($order->payment_method == "stripe")
-                Stripe Payment
-            @else
-                {{ optional($order->paymentMethod)->method_name }}
-            @endif
-        </p>
-        <p>
-            <strong>Payment Status:</strong>
-            @if($order->payment_status == 0)
-                Pending
-            @else
-                {{$order->payment_status}}
-            @endif
-        </p>
-        
+        <p><strong>Payment Currecny:</strong> {{ $order->payment_currency }}</p>
+        <p><strong>Payment Currecny Rate:</strong> {{ $order->payment_currency_rate	 }}</p>
+        <p><strong>Payment Currecny Price:</strong> {{ $order->payment_currency_price	 }}  {{ $order->payment_currency }}</p>
+        <p><strong>Delivery Price:</strong> {{ $order->delivery_price	 }} {{ $order->payment_currency }}</p>
+        <p><strong>Total Price:</strong> {{ $order->payment_currency_price + $order->delivery_price	 }} {{ $order->payment_currency }}</p>
         @if($order->payment_method != 0 && $order->payment_method != "stripe")
             <p><strong>Payment Account Name:</strong> {{ $order->payment_account_name }}</p>
             <p><strong>Account Info:</strong> {{ $order->payment_account_name }}</p>
@@ -126,6 +139,10 @@
                                 }
                             @endphp
                             {{ number_format($finalPrice, 1) }} $
+                            @php
+                            $exchangeRate = $order->payment_currency_rate;
+                            @endphp
+                            ( {{ $finalPrice *  $exchangeRate }} )
                         </td>
                         <td>{{ $detail->qty }}</td>
                     </tr>

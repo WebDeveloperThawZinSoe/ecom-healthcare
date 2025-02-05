@@ -29,7 +29,8 @@ class Order extends Model
         "cupon_code_id",
         "payment_currency",
         "payment_currency_rate",
-        "payment_currency_price"
+        "payment_currency_price",
+        "delivery_price",
     ];
 
     public function user()

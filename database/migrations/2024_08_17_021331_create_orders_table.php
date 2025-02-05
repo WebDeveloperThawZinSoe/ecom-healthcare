@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string("payment_currency")->nullable();
             $table->string("payment_currency_rate")->nullable();
             $table->string("payment_currency_price")->nullable();
+            $table->string("delivery_price")->nullable();
             $table->timestamps();
         });        
     }
