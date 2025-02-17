@@ -16,6 +16,7 @@ use Stripe\Stripe;
 use Stripe\Exception\ApiErrorException;
 use App\Models\Currency;
 use App\Models\Delivery;
+use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
@@ -42,9 +43,9 @@ class CheckoutController extends Controller
         $validatedData = $request->validate($rules);
 
         // Get User Currency
-        $currencyCode = session('currency', 'USD');
+        $currencyCode = session('currency', 'SGD');
         $currency = Currency::where('code', $currencyCode)->first();
-        $currencySymobolCode = $currency->code ?? 'USD';
+        $currencySymobolCode = $currency->code ?? 'SGD';
         $currencySymbol = $currency->symbol ?? '$';
         $exchangeRate = $currency->exchange_rate ?? 1;
         $result = $currencySymobolCode . $currencySymbol . $exchangeRate;
@@ -196,8 +197,27 @@ class CheckoutController extends Controller
                 return redirect('/')->with('success', 'Order placed successfully!');
             }
            
-        } catch (\Exception $e) {
+        }  catch (\Stripe\Exception\CardException $e) {
             DB::rollback();
+            // dd($e->getMessage());
+             Log::error('Stripe Payment Failed', [
+                'error' => $e->getMessage(),
+                'code' => $e->getStripeCode(),
+                'status' => $e->getHttpStatus(),
+                'type' => $e->getError()->type ?? null,
+                'decline_code' => $e->getError()->decline_code ?? null,
+            ]);
+                    
+            return redirect()->back()->with('order_error', 'Payment failed: ' . $e->getMessage());
+        } 
+            catch (\Exception $e) {
+            DB::rollback();
+                // Log General Exception
+                Log::error('Order Processing Failed', [
+                    'error' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                ]);
             return redirect()->back()->with('error', 'Order failed: ' . $e->getMessage());
         }
     }

@@ -17,7 +17,7 @@ class CurrencyMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (!session()->has('currency')) {
-            $defaultCurrency = Currency::where('code', 'USD')->first(); // Set default currency
+            $defaultCurrency = Currency::where('code', 'SGD')->first(); // Set default currency
             session(['currency' => $defaultCurrency->code]);
         }
 

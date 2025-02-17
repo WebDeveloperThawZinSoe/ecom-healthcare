@@ -32,16 +32,20 @@ class AdminDeliveryController extends Controller
     }
 
     public function update(Request $request, Delivery $delivery) {
-        $request->validate([
+        $validatedData = $request->validate([
             'currency' => 'required|string|max:10',
             'deli_price' => 'required|numeric|min:0',
             'mini_price' => 'required|numeric|min:0',
             'note' => 'nullable|string'
         ]);
-
-        $delivery->update($request->all());
-        return redirect()->route('admin.delivery.index')->with('status', 'Delivery setting updated successfully');
+    
+        // Ensure model updates
+        $delivery->update($validatedData);
+    
+        return redirect()->route('admin.delivery.index')->with('status', 'Delivery setting updated successfully!');
     }
+    
+    
 
     public function destroy($id) {
         $delivery = Delivery::findOrFail($id);

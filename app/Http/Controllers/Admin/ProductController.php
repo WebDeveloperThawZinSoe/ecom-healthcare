@@ -252,6 +252,7 @@ class ProductController extends Controller
     
     public function updateProductV2(Request $request)
     {
+       
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
@@ -261,7 +262,8 @@ class ProductController extends Controller
 
         $id = $request->id;
         $product = Product::findOrFail($id);
-
+        // $variants = $product->variants; 
+        // dd($variants);
         // Update product fields
         $product->update([
             'name' => $validatedData['name'],
@@ -271,6 +273,18 @@ class ProductController extends Controller
             "short_description" => $request->shortdescription,
             'status' => $request->status
         ]);
+
+        // Change All Variant Product Status
+        $variants = $product->variants; // Get all variants
+
+        if ($variants->isNotEmpty()) {
+            foreach ($variants as $variant) {
+                // dd($variant);
+                $variant->update([
+                    'status' => $request->status,
+                ]);
+            }
+        }
 
         // Update main product image
         if ($request->hasFile('image')) {
