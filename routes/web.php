@@ -70,6 +70,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/admin/product/update/v2/variant/{variant}', [ProductController::class, 'updateProductV2Varaint'])->name('product.update.v2.variant');
     Route::post('/product/update/v2/variant/add', [ProductController::class, 'addProductV2VaraintAdd'])->name('product.add.v2.variant.add');
     Route::delete('/admin/product/variant/{id}', [ProductController::class, 'deleteVariant'])->name('product.variant.delete');
+    Route::post('/admin/upload/image', [ProductController::class, 'uploadImage'])->name('upload.image');
     Route::put('admin/general_settings/update', [GeneralSettingController::class, 'update'])->name('general_settings.update');
     Route::get('/admin/customers/{id}', [OrderController::class, 'getCustomerDetails'])->name('admin.customers.details');
     Route::put('vip-request/{id}', [AccountTypeController::class, 'updateVIPRequest'])->name('vip.request.update');

@@ -25,6 +25,35 @@ class ProductController extends Controller
         return view('admin.products.index', compact('products', 'categories', 'subCategories'));
     }
 
+    public function uploadImage(Request $request)
+    {
+        if ($request->hasFile('upload')) {
+            $image = $request->file('upload');
+    
+            // Validate Image
+            $request->validate([
+                'upload' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+            ]);
+    
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('uploads/ckeditor'), $imageName);
+    
+            $url = asset('uploads/ckeditor/' . $imageName);
+    
+            return response()->json([
+                "uploaded" => 1,
+                "fileName" => $imageName,
+                "url" => $url
+            ]);
+        }
+    
+        return response()->json([
+            "uploaded" => 0,
+            "error" => ["message" => "No file uploaded."]
+        ], 400);
+    }
+    
+
     public function create()
     {
         $categories = ProductCategory::all();
@@ -44,6 +73,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         // Validate inputs
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
